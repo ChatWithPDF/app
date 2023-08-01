@@ -1,0 +1,35 @@
+{
+  "name": "uci",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "cd apps/ai-tools && yarn dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "watch": "lerna run watch --parallel"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1",
+    "eslint-config-custom": "*",
+    "lerna": "^6.6.1",
+    "prettier": "latest",
+    "turbo": "latest"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Samagra-Development/ai-tools"
+  },
+  "packageManager": "yarn@1.22.19",
+  "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^3.4.1",
+    "pdfjs-dist": "^3.4.120"
+  }
+}
