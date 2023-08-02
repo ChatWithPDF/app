@@ -25,27 +25,31 @@ const MiddleSide = () => {
   const { highlight } = searchPluginInstance;
 
   useEffect(() => {
-    function generateVariationsWithSpaceRemoved(strings: string[]) {
-      let result = [];
+    function splitStringsIntoChunks(stringsArray: string[]) {
+      const result = [];
     
-      for (let i = 0; i < strings.length; i++) {
-        result.push(strings[i]); // Add the original string to the result array
+      for (let i = 0; i < stringsArray.length; i++) {
+        const words = stringsArray[i].split(' ');
+        let currentChunk: string[] = [];
     
-        // Remove one space at a time and add the modified string to the result array
-        for (let j = 0; j < strings[i].length; j++) {
-          if (strings[i][j] === ' ') {
-            let modifiedString = strings[i].slice(0, j) + strings[i].slice(j + 1);
-            if (!result.includes(modifiedString)) {
-              result.push(modifiedString);
-            }
+        for (let j = 0; j < words.length; j++) {
+          if (currentChunk.length < 4) {
+            currentChunk.push(words[j]);
+          } else {
+            result.push(currentChunk.join(' '));
+            currentChunk = [words[j]];
           }
+        }
+    
+        if (currentChunk.length > 0) {
+          result.push(currentChunk.join(' '));
         }
       }
     
       return result;
     }
-    console.log(generateVariationsWithSpaceRemoved(keyword))
-    keyword && highlight(generateVariationsWithSpaceRemoved(keyword));
+    console.log(splitStringsIntoChunks(keyword))
+    keyword && highlight(splitStringsIntoChunks(keyword));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword]);
 
