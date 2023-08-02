@@ -7,7 +7,7 @@ import {
   FileCard,
   Video,
   Typing,
-  RichText
+  RichText,
   //@ts-ignore
 } from 'chatui';
 import axios from 'axios';
@@ -50,7 +50,6 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   const t = useLocalization();
   const context = useContext(AppContext);
   const [reaction, setReaction] = useState(message?.content?.data?.reaction);
-  
 
   useEffect(() => {
     setReaction(message?.content?.data?.reaction);
@@ -157,7 +156,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       text = text.replace(/(\r\n|\n|\r)/gm, ' ');
       let modelId;
       const lang = localStorage.getItem('locale') || 'en';
-      switch(lang){
+      switch (lang) {
         case 'bn':
           modelId = '621774da7c69fa1fc5bba7d6';
           break;
@@ -171,22 +170,14 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
           modelId = '620cd101bedccf5280e4eb26';
           break;
         default:
-          modelId = '61ea3ab41121fa5fec13aeaf'
+          modelId = '61ea3ab41121fa5fec13aeaf';
       }
-      const obj = new ComputeAPI(
-        modelId,
-        text,
-        'tts',
-        '',
-        '',
-        '',
-        'female'
-      );
+      const obj = new ComputeAPI(modelId, text, 'tts', '', '', '', 'female');
       try {
         let audio;
         // if (!context?.audioRef.current) {
-          const res = await textToSpeech(obj);
-          audio = new Audio(res);
+        const res = await textToSpeech(obj);
+        audio = new Audio(res);
         // }else{
         //   audio = context?.audioRef.current;
         // }
@@ -219,6 +210,12 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     [context?.isAudioPlaying, context?.context?.audioRef]
   );
 
+  const textHighlighter = (content: any) => {
+    content?.data?.position === 'left' &&
+      content?.data?.highlightText &&
+      context?.setKeyword(content.data.highlightText || '');
+  };
+
   const { content, type } = message;
 
   switch (type) {
@@ -241,6 +238,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             }></div>
           <Bubble type="text">
             <span
+              onClick={() => textHighlighter(content)}
               className="onHover"
               style={{
                 fontWeight: 600,
@@ -248,7 +246,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 color:
                   content?.data?.position === 'right' ? 'white' : 'var(--font)',
               }}>
-                <RichText content={content.text} />
+              <RichText content={content.text} />
             </span>
             <div
               style={{

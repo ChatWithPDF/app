@@ -97,6 +97,12 @@ const LeftSide = () => {
 
   // Method to select a PDF
   const selectPdf = (pdf: any) => {
+    //Dont let select pdf unless response came
+    if (context?.loading) {
+      toast.error('Please wait for response');
+      return;
+    }
+
     // Revoke the URL of the currently-selected PDF, if there is one and clear the messages
     if (selectedPdf) {
       URL.revokeObjectURL(selectedPdf.preview);
@@ -115,9 +121,9 @@ const LeftSide = () => {
       p.file.name === pdf.file.name ? newPdf : p
     );
     setPdfList(newPdfList);
-    
+
     // Run only for mobile view
-    window.innerWidth < 768 && setCollapsed((prev:any) => !prev);
+    window.innerWidth < 768 && setCollapsed((prev: any) => !prev);
   };
 
   return (
@@ -156,7 +162,7 @@ const LeftSide = () => {
               </div>
               <div className={styles.mobileView}>{pdf.file.name}</div>
               {!collapsed && (
-              <div className={styles.pdfName}>{pdf.file.name}</div>
+                <div className={styles.pdfName}>{pdf.file.name}</div>
               )}
             </div>
           ))}
