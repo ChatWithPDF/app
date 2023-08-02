@@ -287,9 +287,9 @@ const ContextProvider: FC<{
 
           // Handle response here
           console.log('hie', response.data);
-          const highlightText = response.data.context.map(
+          const highlightText = response.data.context ? response.data.context.map(
             (obj: any) => obj.content
-          );
+          ) : [''];
           console.log('hie', highlightText);
           onMessageReceived({
             content: {
@@ -303,6 +303,18 @@ const ContextProvider: FC<{
           });
         } catch (error) {
           // Handle error here
+          onMessageReceived({
+            content: {
+              title: "Something went wrong. Please try again later.",
+              msg_type: 'TEXT',
+              choices: null,
+              conversationId: sessionStorage.getItem('conversationId'),
+              highlightText: [''],
+            },
+            messageId: uuidv4(),
+          });
+          setIsMsgReceiving(false);
+          setLoading(false);
           console.log(error);
         }
       }

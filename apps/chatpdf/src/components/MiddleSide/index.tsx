@@ -34,10 +34,10 @@ const MiddleSide = () => {
     
         for (let j = 0; j < words.length; j++) {
           if (currentChunk.length < 4) {
-            currentChunk.push(words[j]);
+            currentChunk.push(words[j].trim());
           } else {
             result.push(currentChunk.join(' '));
-            currentChunk = [words[j]];
+            currentChunk = [words[j].trim()];
           }
         }
     
@@ -48,7 +48,6 @@ const MiddleSide = () => {
     
       return result;
     }
-    console.log(splitStringsIntoChunks(keyword))
     keyword && highlight(splitStringsIntoChunks(keyword));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword]);
