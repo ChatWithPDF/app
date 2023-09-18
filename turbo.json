@@ -4,9 +4,7 @@
     "ANALYZE",
     "NEXT_PUBLIC_BASE_URL",
     "NODE_ENV",
-    "NEXT_PUBLIC_ENV",
-    "NEXT_PUBLIC_ASR_URL",
-    "NEXT_PUBLIC_ASR_AUTH_TOKEN"
+    "NEXT_PUBLIC_ENV"
   ],
 
   "globalDependencies": ["**/.env.*local"],
