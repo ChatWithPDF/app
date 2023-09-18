@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from 'react';
 import Image from 'next/image';
 import stop from '../../assets/icons/stop.gif';
 import start from '../../assets/icons/startIcon.svg';
-import { Grid } from '@material-ui/core';
+import { Grid, CircularProgress, Backdrop } from '@material-ui/core';
 import styles from './styles.module.css';
 import toast from 'react-hot-toast';
 import { AppContext } from '../../context';
@@ -87,6 +87,11 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
 
   return (
     <div>
+      {apiCallStatus === 'processing' && (
+        <Backdrop open={true} style={{ zIndex: 999, color: '#fff' }}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      )}
       <div>
         {mediaRecorder && mediaRecorder.state === 'recording' ? (
           <div className={styles.center}>
