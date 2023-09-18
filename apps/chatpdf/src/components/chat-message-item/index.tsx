@@ -35,8 +35,6 @@ import { useLocalization } from '../../hooks/useLocalization';
 import { getReactionUrl } from '../../utils/getUrls';
 import Image from 'next/image';
 import { Button } from '@chakra-ui/react';
-import { textToSpeech } from '../../utils/textToSpeech';
-import ComputeAPI from '../recorder/Model/ModelSearch/HostedInference';
 
 const getToastMessage = (t: any, reaction: number): string => {
   if (reaction === 1) return t('toast.reaction_like');
@@ -151,74 +149,6 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     [context, t]
   );
 
-  const ttsHandler = useCallback(
-    async (text: string) => {
-      // removing line breaks from the text
-      text = text.replace(/(\r\n|\n|\r)/gm, ' ');
-      let modelId;
-      const lang = localStorage.getItem('locale') || 'en';
-      switch(lang){
-        case 'bn':
-          modelId = '621774da7c69fa1fc5bba7d6';
-          break;
-        case 'en':
-          modelId = '623ac7b27c69fa1fc5bba7df';
-          break;
-        case 'ta':
-          modelId = '61ea3b171121fa5fec13aeb1';
-          break;
-        case 'te':
-          modelId = '620cd101bedccf5280e4eb26';
-          break;
-        default:
-          modelId = '61ea3ab41121fa5fec13aeaf'
-      }
-      const obj = new ComputeAPI(
-        modelId,
-        text,
-        'tts',
-        '',
-        '',
-        '',
-        'female'
-      );
-      try {
-        let audio;
-        // if (!context?.audioRef.current) {
-          const res = await textToSpeech(obj);
-          audio = new Audio(res);
-        // }else{
-        //   audio = context?.audioRef.current;
-        // }
-
-        audio.addEventListener('ended', () => {
-          context && (context.audioRef.current = null);
-          context?.setIsAudioPlaying(false);
-        });
-
-        if (context?.audioRef.current === audio) {
-          if (context?.isAudioPlaying) {
-            audio.pause();
-          } else {
-            audio.play();
-          }
-          context?.setIsAudioPlaying(!context?.isAudioPlaying);
-        } else {
-          if (context?.audioRef.current) {
-            context?.audioRef.current.pause();
-          }
-          context && (context.audioRef.current = audio);
-          audio.play();
-          context?.setIsAudioPlaying(true);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [context?.isAudioPlaying, context?.context?.audioRef]
-  );
-
   const { content, type } = message;
 
   switch (type) {
@@ -273,12 +203,6 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                     content?.data?.repliedTimestamp
                 )}
               </span>
-
-              {content?.data?.position === 'left' && (
-                <div onClick={() => ttsHandler(content?.text)}>
-                  <Image src={speakerIcon} alt="" width={25} height={25} />
-                </div>
-              )}
             </div>
           </Bubble>
           {content?.data?.position === 'left' && (

@@ -17,7 +17,6 @@ import { useLocalization } from '../hooks';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
-import ComputeAPI from '../components/recorder/Model/ModelSearch/HostedInference';
 
 function loadMessages(locale: string) {
   switch (locale) {
@@ -25,12 +24,6 @@ function loadMessages(locale: string) {
       return import('../../lang/en.json');
     case 'hi':
       return import('../../lang/hi.json');
-    case 'bn':
-      return import('../../lang/bn.json');
-    case 'ta':
-      return import('../../lang/ta.json');
-    case 'te':
-      return import('../../lang/te.json');
     default:
       return import('../../lang/en.json');
   }
@@ -48,7 +41,7 @@ const ContextProvider: FC<{
   const [selectedPdf, setSelectedPdf] = useState<any>(null);
   const [uploadingPdf, setUploadingPdf] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [processingPdf, setProcessingPdf] = useState(false);
+  const [processingPdf, setProcessingPdf] = useState(false); // Used to show spinner while API req is on pending
   const [users, setUsers] = useState<UserType[]>([]);
   const [currentUser, setCurrentUser] = useState<UserType>();
   const [loading, setLoading] = useState(false);
@@ -63,6 +56,7 @@ const ContextProvider: FC<{
   const [cookie, setCookie, removeCookie] = useCookies();
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const audioRef = useRef(null);
+  const [currentPdfId, setCurrentPdfId] = useState('');
 
   console.log(messages);
 
@@ -107,6 +101,7 @@ const ContextProvider: FC<{
     async (msg: any) => {
       console.log('mssgs:', messages);
       console.log('#-debug:', { msg });
+      setLoading(false);
       setIsMsgReceiving(false);
       //@ts-ignore
       const user = JSON.parse(localStorage.getItem('currentUser'));
@@ -139,76 +134,7 @@ const ContextProvider: FC<{
           media: { fileUrl: msg?.content?.media_url },
         });
       } else if (msg.content.msg_type.toUpperCase() === 'TEXT') {
-        try {
-          if (localStorage.getItem('locale') === 'en') {
-            setLoading(false);
-            updateMsgState({ user, msg, media: {} });
-            return;
-          }
-          const modelId_TRANSLATION = () => {
-            const lang = localStorage.getItem('locale') || 'en';
-            switch (lang) {
-              case 'hi':
-                return '6110f7f7014fa35d5e767c3f';
-              case 'bn':
-                return '6110f7da014fa35d5e767c3d';
-              case 'ta':
-                return '610cfe8b014fa35d5e767c35';
-              case 'te':
-                return '6110f89b014fa35d5e767c46';
-              default:
-                return '63ee09c3b95268521c70cd7c';
-            }
-          };
-
-          if (msg.content.split) {
-            let titles = msg.content.title.split(`\n`);
-            for (let i = 0; i < titles.length; i++) {
-              const obj = new ComputeAPI(
-                modelId_TRANSLATION(),
-                titles[i],
-                'translation',
-                '',
-                '',
-                '',
-                ''
-              );
-              const res = await fetch(obj.apiEndPoint(), {
-                method: 'post',
-                body: JSON.stringify(obj.getBody()),
-                headers: obj.getHeaders().headers,
-              });
-              const rsp_data = await res.json();
-              console.log('hi', rsp_data.output[0].target);
-              titles[i] = rsp_data.output[0].target;
-            }
-            msg.content.title = titles.join(`\n`);
-            setLoading(false);
-            updateMsgState({ user, msg, media: {} });
-          } else {
-            const obj = new ComputeAPI(
-              modelId_TRANSLATION(),
-              msg.content.title,
-              'translation',
-              '',
-              '',
-              '',
-              ''
-            );
-            const res = await fetch(obj.apiEndPoint(), {
-              method: 'post',
-              body: JSON.stringify(obj.getBody()),
-              headers: obj.getHeaders().headers,
-            });
-            const rsp_data = await res.json();
-            console.log('hi', rsp_data.output[0].target);
-            msg.content.title = rsp_data.output[0].target;
-            setLoading(false);
-            updateMsgState({ user, msg, media: {} });
-          }
-        } catch (err) {
-          console.error(err);
-        }
+        updateMsgState({ user, msg, media: {} });
       }
     },
     [messages, updateMsgState]
@@ -261,12 +187,13 @@ const ContextProvider: FC<{
           },
         ]);
         // Send the user's message to API
+        console.log(selectedPdf);
         const data = {
           body: text,
           userId: localStorage.getItem('userID'),
           messageId: uuidv4(),
           conversationId: sessionStorage.getItem('conversationId'),
-          pdfId: selectedPdf?.uuid,
+          pdfId: selectedPdf?.id,
         };
 
         try {
@@ -279,7 +206,6 @@ const ContextProvider: FC<{
               },
             }
           );
-
           // Handle response here
           console.log('hie', response.data);
           onMessageReceived({
@@ -297,7 +223,7 @@ const ContextProvider: FC<{
         }
       }
     },
-    [removeCookie, selectedPdf?.uuid, currentUser?.id, onMessageReceived]
+    [removeCookie, selectedPdf?.id, currentUser?.id, onMessageReceived]
   );
 
   const fetchIsDown = useCallback(async () => {
@@ -378,6 +304,8 @@ const ContextProvider: FC<{
       setProcessingPdf,
       collapsed,
       setCollapsed,
+      currentPdfId,
+      setCurrentPdfId,
     }),
     [
       locale,
@@ -414,6 +342,8 @@ const ContextProvider: FC<{
       setProcessingPdf,
       collapsed,
       setCollapsed,
+      currentPdfId,
+      setCurrentPdfId,
     ]
   );
 
