@@ -20,7 +20,7 @@ module.exports = withBundleAnalyzer({
     ignoreBuildErrors: true,    
   },
   i18n: {
-    locales: ['or','en'],
+    locales: ['en'],
     defaultLocale: 'en',
   }
 })

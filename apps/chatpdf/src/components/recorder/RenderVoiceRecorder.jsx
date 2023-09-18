@@ -48,25 +48,72 @@ const RenderVoiceRecorder = ({ setInputMsg }) => {
     };
   }, [mediaRecorder]);
 
+  async function blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+  
+      reader.onload = () => {
+        const base64String = reader.result.split(',')[1];
+        resolve(base64String);
+      };
+  
+      reader.onerror = (error) => {
+        reject(error);
+      };
+  
+      reader.readAsDataURL(blob);
+    });
+  }
+
   const makeComputeAPICall = async (blob) => {
     try {
+      const base64 = await blobToBase64(blob);
       setApiCallStatus('processing');
-      console.log('base', blob);
+      console.log('base', base64);
       toast.success(`${t('message.recorder_wait')}`);
 
       // Define the API endpoint
-      const apiEndpoint = process.env.NEXT_PUBLIC_BASE_URL;
+      const apiEndpoint = process.env.NEXT_PUBLIC_ASR_URL;
+      const authorizationToken = process.env.NEXT_PUBLIC_ASR_AUTH_TOKEN;
+      const locale = localStorage.getItem('locale');
+      let language = 'en';
 
-      // Create a FormData object
-      const formData = new FormData();
+      if (locale === 'en') {
+        language = 'en';
+      } else if (locale === 'hi') {
+        language = 'hi';
+      }
 
-      // Append the WAV file to the FormData object
-      formData.append('file', blob, 'audio.wav');
+      const requestData = {
+        pipelineTasks: [
+          {
+            taskType: 'asr',
+            config: {
+              language: {
+                sourceLanguage: language
+              },
+              serviceId: language === 'en' ? 'ai4bharat/whisper-medium-en--gpu--t4' : 'ai4bharat/conformer-hi-gpu--t4'
+            }
+          }
+        ],
+        inputData: {
+          audio: [
+            {
+              audioContent: base64
+            }
+          ]
+        }
+      };
 
       // Send the WAV data to the API
-      const resp = await fetch(apiEndpoint + '/aitools/asr', {
+      const resp = await fetch(apiEndpoint, {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': authorizationToken,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
       });
 
       if (resp.ok) {

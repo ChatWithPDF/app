@@ -187,7 +187,6 @@ const ContextProvider: FC<{
           },
         ]);
         // Send the user's message to API
-        console.log(selectedPdf);
         const data = {
           body: text,
           userId: localStorage.getItem('userID'),
