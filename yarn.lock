@@ -4045,7 +4045,7 @@
   dependencies:
     "@react-pdf-viewer/core" "3.12.0"
 
-"@react-pdf-viewer/search@3.12.0", "@react-pdf-viewer/search@^3.12.0":
+"@react-pdf-viewer/search@3.12.0":
   version "3.12.0"
   resolved "https://registry.npmjs.org/@react-pdf-viewer/search/-/search-3.12.0.tgz"
   integrity sha512-jAkLpis49fsDDY/HrbUZIOIhzF5vynONQNA4INQKI38r/MjveblrkNv7qbr9j5lQ/WFic5+gD1e+Mtpf1/7DiA==
@@ -9376,6 +9376,13 @@ currently-unhandled@^0.4.1:
   integrity sha512-/fITjgjGU50vjQ4FH6eUoYu+iUoUKIXws2hL15JJpIR+BbTxaXQsMuuyjtNh2WqsSBS5nsaZHFsFecyw5CCAng==
   dependencies:
     array-find-index "^1.0.1"
+
+custom-pdf-search@3.12.36:
+  version "3.12.36"
+  resolved "https://registry.yarnpkg.com/custom-pdf-search/-/custom-pdf-search-3.12.36.tgz#511a39d603307afd20bfb528b6f4a27bc38ec2c0"
+  integrity sha512-3+3jhUEtkWnaKhUMtHoSDdpxbDPIg9cfdJtGRAwvhjdONZLkK5G5JDyVgetDdji2pX51End6G8nQO7qka4tcxQ==
+  dependencies:
+    "@react-pdf-viewer/core" "3.12.0"
 
 cyclist@^1.0.1:
   version "1.0.2"
