@@ -63,6 +63,7 @@ const ContextProvider: FC<{
   const [cookie, setCookie, removeCookie] = useCookies();
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const audioRef = useRef(null);
+  const [keyword, setKeyword] = useState([]);
 
   console.log(messages);
 
@@ -73,7 +74,10 @@ const ContextProvider: FC<{
       media,
     }: {
       user: { name: string; id: string };
-      msg: { content: { title: string; choices: any }; messageId: string };
+      msg: {
+        content: { title: string; choices: any; highlightText: string[] };
+        messageId: string;
+      };
       media: any;
     }) => {
       console.log('hie', msg);
@@ -89,6 +93,7 @@ const ContextProvider: FC<{
           messageId: msg?.messageId,
           //@ts-ignore
           conversationId: msg?.content?.conversationId,
+          highlightText: msg?.content?.highlightText,
           sentTimestamp: Date.now(),
           ...media,
         };
@@ -282,17 +287,34 @@ const ContextProvider: FC<{
 
           // Handle response here
           console.log('hie', response.data);
+          const highlightText = response.data.context ? response.data.context.map(
+            (obj: any) => obj.content
+          ) : [''];
+          console.log('hie', highlightText);
           onMessageReceived({
             content: {
               title: response.data.output,
               msg_type: 'TEXT',
               choices: null,
               conversationId: sessionStorage.getItem('conversationId'),
+              highlightText,
             },
             messageId: uuidv4(),
           });
         } catch (error) {
           // Handle error here
+          onMessageReceived({
+            content: {
+              title: "Something went wrong. Please try again later.",
+              msg_type: 'TEXT',
+              choices: null,
+              conversationId: sessionStorage.getItem('conversationId'),
+              highlightText: [''],
+            },
+            messageId: uuidv4(),
+          });
+          setIsMsgReceiving(false);
+          setLoading(false);
           console.log(error);
         }
       }
@@ -378,6 +400,8 @@ const ContextProvider: FC<{
       setProcessingPdf,
       collapsed,
       setCollapsed,
+      keyword,
+      setKeyword
     }),
     [
       locale,
@@ -414,6 +438,8 @@ const ContextProvider: FC<{
       setProcessingPdf,
       collapsed,
       setCollapsed,
+      keyword,
+      setKeyword
     ]
   );
 
