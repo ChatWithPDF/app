@@ -24,7 +24,6 @@ import { toast } from 'react-hot-toast';
 
 import styles from './index.module.css';
 import RightIcon from '../../assets/icons/right.jsx';
-import speakerIcon from '../../assets/icons/speakerIcon.svg';
 import CopyText from '../../assets/icons/copy-text.svg';
 import MsgThumbsUp from '../../assets/icons/msg-thumbs-up.jsx';
 import MsgThumbsDown from '../../assets/icons/msg-thumbs-down.jsx';
@@ -150,66 +149,6 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     [context, t]
   );
 
-  const ttsHandler = useCallback(
-    async (text: string) => {
-      // removing line breaks from the text
-      text = text.replace(/(\r\n|\n|\r)/gm, ' ');
-      let modelId;
-      const lang = localStorage.getItem('locale') || 'en';
-      switch (lang) {
-        case 'bn':
-          modelId = '621774da7c69fa1fc5bba7d6';
-          break;
-        case 'en':
-          modelId = '623ac7b27c69fa1fc5bba7df';
-          break;
-        case 'ta':
-          modelId = '61ea3b171121fa5fec13aeb1';
-          break;
-        case 'te':
-          modelId = '620cd101bedccf5280e4eb26';
-          break;
-        default:
-          modelId = '61ea3ab41121fa5fec13aeaf';
-      }
-      const obj = new ComputeAPI(modelId, text, 'tts', '', '', '', 'female');
-      try {
-        let audio;
-        // if (!context?.audioRef.current) {
-        const res = await textToSpeech(obj);
-        audio = new Audio(res);
-        // }else{
-        //   audio = context?.audioRef.current;
-        // }
-
-        audio.addEventListener('ended', () => {
-          context && (context.audioRef.current = null);
-          context?.setIsAudioPlaying(false);
-        });
-
-        if (context?.audioRef.current === audio) {
-          if (context?.isAudioPlaying) {
-            audio.pause();
-          } else {
-            audio.play();
-          }
-          context?.setIsAudioPlaying(!context?.isAudioPlaying);
-        } else {
-          if (context?.audioRef.current) {
-            context?.audioRef.current.pause();
-          }
-          context && (context.audioRef.current = audio);
-          audio.play();
-          context?.setIsAudioPlaying(true);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [context?.isAudioPlaying, context?.context?.audioRef]
-  );
-
   const textHighlighter = (content: any) => {
     content?.data?.position === 'left' &&
       content?.data?.highlightText &&
@@ -230,12 +169,12 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             position: 'relative',
             maxWidth: '90vw',
           }}>
-          <div
+          {/* <div
             className={
               content?.data?.position === 'right'
                 ? styles.messageTriangleRight
                 : styles.messageTriangleLeft
-            }></div>
+            }></div> */}
           <Bubble type="text">
             <span
               onClick={() => textHighlighter(content)}
@@ -271,12 +210,6 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                     content?.data?.repliedTimestamp
                 )}
               </span>
-
-              {content?.data?.position === 'left' && (
-                <div onClick={() => ttsHandler(content?.text)}>
-                  <Image src={speakerIcon} alt="" width={25} height={25} />
-                </div>
-              )}
             </div>
           </Bubble>
           {content?.data?.position === 'left' && (
