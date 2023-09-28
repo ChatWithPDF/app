@@ -26,6 +26,7 @@ const MiddleSide = () => {
 
   useEffect(() => {
     function splitStringsIntoChunks(stringsArray: string[]) {
+      if(!stringsArray[0]) return [''];
       const result = [];
 
       for (let i = 0; i < stringsArray.length; i++) {
