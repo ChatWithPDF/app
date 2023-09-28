@@ -25,35 +25,33 @@ const MiddleSide = () => {
   const { highlight } = searchPluginInstance;
 
   useEffect(() => {
-    // function splitStringsIntoChunks(stringsArray: string[]) {
-    //   const result = [];
+    function splitStringsIntoChunks(stringsArray: string[]) {
+      const result = [];
 
-    //   for (let i = 0; i < stringsArray.length; i++) {
-    //     const words = stringsArray[i].split(' ');
-    //     let currentChunk: string[] = [];
-    //     let upper_limit = 4;
-    //     if(currentChunk.length % upper_limit === 1){
-    //       upper_limit+=1;
-    //     }
-    //     for (let j = 0; j < words.length; j++) {
-    //       if (currentChunk.length < upper_limit) {
-    //         currentChunk.push(words[j].trim());
-    //       } else {
-    //         result.push(currentChunk.join(' '));
-    //         currentChunk = [words[j].trim()];
-    //       }
-    //     }
+      for (let i = 0; i < stringsArray.length; i++) {
+        const words = stringsArray[i].split(' ');
+        let currentChunk: string[] = [];
+        let upper_limit = 5;
+        for (let j = 0; j < words.length - (words.length % upper_limit); j++) {
+          if (currentChunk.length < upper_limit) {
+            currentChunk.push(words[j].trim());
+          } else {
+            result.push(currentChunk.join(' '));
+            currentChunk = [words[j].trim()];
+          }
+        }
 
-    //     if (currentChunk.length > 0) {
-    //       result.push(currentChunk.join(' '));
-    //     }
-    //   }
+        if (currentChunk.length > 0) {
+          result.push(currentChunk.join(' '));
+        }
+      }
 
-    //   return result;
-    // }
-    console.log('keyword', keyword);
+      return result;
+    }
+    console.log('keyword', splitStringsIntoChunks([keyword[0]]));
+    console.log('keyword', keyword[0]);
     keyword &&
-      highlight(keyword);
+      highlight(splitStringsIntoChunks([keyword[0]]));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword]);
 
