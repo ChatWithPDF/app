@@ -6,6 +6,7 @@ import LeftSide from '../components/LeftSide';
 import MiddleSide from '../components/MiddleSide';
 import { AppContext } from '../context';
 import { useContext } from 'react';
+import NavBar from '../components/NavBar';
 
 const ChatUiWindow = dynamic(
   () => import('../components/ChatWindow/ChatUiWindow'),
@@ -46,12 +47,21 @@ const Home: NextPage = () => {
           <MiddleSide />
         </div>
         <div
-          id="chatUI"
           style={{
             flex: 1,
-            height: '90vh',
+            height: '100vh'
           }}>
-          <ChatUiWindow />
+          <NavBar />
+          <div
+            id='chatUI'
+            style={{
+              position: 'fixed',
+              top: '70px',
+              bottom: '1vh',
+              width: '45vw',
+            }}>
+            <ChatUiWindow />
+          </div>
         </div>
       </div>
 
@@ -59,7 +69,7 @@ const Home: NextPage = () => {
       <style jsx>{`
         @media (max-width: 767px) {
           #chatUI{
-            height: 80vh !important;
+            width: 100% !important;
           }
           div {
             display: none;
