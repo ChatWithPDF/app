@@ -138,6 +138,7 @@ const LeftSide = () => {
 
   // Method to select a PDF
   const selectPdf = (pdf: any, clearMsg?: boolean) => {
+    if(!pdf) return;
     if (clearMsg === undefined) clearMsg = true;
 
     if (context?.loading) {
