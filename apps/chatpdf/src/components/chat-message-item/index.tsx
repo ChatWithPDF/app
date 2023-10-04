@@ -87,7 +87,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   }
   const feedbackHandler = useCallback(
     ({ like, msgId }: { like: 0 | 1 | -1; msgId: string }) => {
-      console.log('vbnm:', { reaction, like });
+      console.log('vbnm:', { reaction, like, msgId });
       if (reaction === 0) {
         setReaction(like);
         return onLikeDislike({ value: like, msgId });

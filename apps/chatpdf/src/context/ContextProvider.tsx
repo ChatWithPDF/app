@@ -225,7 +225,7 @@ const ContextProvider: FC<{
               conversationId: sessionStorage.getItem('conversationId'),
               highlightText,
             },
-            messageId: uuidv4(),
+            messageId: response.data.id,
           });
         } catch (error) {
           // Handle error here
