@@ -46,6 +46,7 @@ const Home: NextPage = () => {
           <MiddleSide />
         </div>
         <div
+          id="chatUI"
           style={{
             flex: 1,
             height: '90vh',
@@ -57,6 +58,9 @@ const Home: NextPage = () => {
       {/* Mobile View */}
       <style jsx>{`
         @media (max-width: 767px) {
+          #chatUI{
+            height: 80vh !important;
+          }
           div {
             display: none;
           }
