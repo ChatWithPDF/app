@@ -151,7 +151,7 @@ const ChatUiWindow: React.FC = () => {
           disableSend={context?.loading}
           //@ts-ignore
           messages={msgToRender}
-          voiceToText={RenderVoiceRecorder}
+          // voiceToText={RenderVoiceRecorder}
           //@ts-ignore
           renderMessageContent={(props): ReactElement => (
             <ChatMessageItem

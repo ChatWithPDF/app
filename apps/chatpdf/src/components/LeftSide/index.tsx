@@ -58,6 +58,7 @@ const LeftSide = () => {
       .then(() => {
         setPdfList(pdfListTemp);
         setSpinner(false);
+        setSelectedPdf(pdfListTemp[0]);
       })
       .catch((error) => {
         toast.error('Error fetching PDFs');

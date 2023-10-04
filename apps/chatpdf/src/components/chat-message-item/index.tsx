@@ -7,7 +7,7 @@ import {
   FileCard,
   Video,
   Typing,
-  RichText
+  RichText,
   //@ts-ignore
 } from 'chatui';
 import axios from 'axios';
@@ -24,7 +24,6 @@ import { toast } from 'react-hot-toast';
 
 import styles from './index.module.css';
 import RightIcon from '../../assets/icons/right.jsx';
-import speakerIcon from '../../assets/icons/speakerIcon.svg';
 import CopyText from '../../assets/icons/copy-text.svg';
 import MsgThumbsUp from '../../assets/icons/msg-thumbs-up.jsx';
 import MsgThumbsDown from '../../assets/icons/msg-thumbs-down.jsx';
@@ -48,36 +47,35 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   const t = useLocalization();
   const context = useContext(AppContext);
   const [reaction, setReaction] = useState(message?.content?.data?.reaction);
-  
 
   useEffect(() => {
     setReaction(message?.content?.data?.reaction);
   }, [message?.content?.data?.reaction]);
 
-  // const onLikeDislike = useCallback(
-  //   ({ value, msgId }: { value: 0 | 1 | -1; msgId: string }) => {
-  //     let url = getReactionUrl({ msgId, reaction: value });
+  const onLikeDislike = useCallback(
+    ({ value, msgId }: { value: 0 | 1 | -1; msgId: string }) => {
+      let url = getReactionUrl({ msgId, reaction: value });
 
-  //     axios
-  //       .get(url, {
-  //         headers: {
-  //           authorization: `Bearer ${localStorage.getItem('auth')}`,
-  //         },
-  //       })
-  //       .then((res: any) => {
-  //         if (value === -1) {
-  //           context?.setShowDialerPopup(true);
-  //         } else {
-  //           toast.success(`${getToastMessage(t, value)}`);
-  //         }
-  //       })
-  //       .catch((error: any) => {
-  //         console.error(error);
-  //       });
-  //   },
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   [t]
-  // );
+      axios
+        .get(url, {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem('auth')}`,
+          },
+        })
+        .then((res: any) => {
+          if (value === -1) {
+            context?.setShowDialerPopup(true);
+          } else {
+            toast.success(`${getToastMessage(t, value)}`);
+          }
+        })
+        .catch((error: any) => {
+          console.error(error);
+        });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [t]
+  );
 
   async function copyTextToClipboard(text: string) {
     console.log('here');
@@ -92,24 +90,24 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       console.log('vbnm:', { reaction, like });
       if (reaction === 0) {
         setReaction(like);
-        // return onLikeDislike({ value: like, msgId });
+        return onLikeDislike({ value: like, msgId });
       }
       if (reaction === 1 && like === -1) {
         console.log('vbnm triggered 1');
         setReaction(-1);
-        // return onLikeDislike({ value: -1, msgId });
+        return onLikeDislike({ value: -1, msgId });
       }
       if (reaction === -1 && like === 1) {
         console.log('vbnm triggered 2');
         setReaction(1);
-        // return onLikeDislike({ value: 1, msgId });
+        return onLikeDislike({ value: 1, msgId });
       }
 
       console.log('vbnm triggered');
-      // onLikeDislike({ value: 0, msgId });
+      onLikeDislike({ value: 0, msgId });
       setReaction(0);
     },
-    [reaction]
+    [onLikeDislike, reaction]
   );
 
   const getLists = useCallback(
@@ -149,6 +147,12 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     [context, t]
   );
 
+  const textHighlighter = (content: any) => {
+    content?.data?.position === 'left' &&
+      content?.data?.highlightText &&
+      context?.setKeyword(content.data.highlightText || '');
+  };
+
   const { content, type } = message;
 
   switch (type) {
@@ -163,14 +167,15 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             position: 'relative',
             maxWidth: '90vw',
           }}>
-          <div
+          {/* <div
             className={
               content?.data?.position === 'right'
                 ? styles.messageTriangleRight
                 : styles.messageTriangleLeft
-            }></div>
+            }></div> */}
           <Bubble type="text">
             <span
+              onClick={() => textHighlighter(content)}
               className="onHover"
               style={{
                 fontWeight: 600,
@@ -178,15 +183,12 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 color:
                   content?.data?.position === 'right' ? 'white' : 'var(--font)',
               }}>
-                <RichText content={content.text} />
+              <RichText content={content.text} />
             </span>
             <div
               style={{
                 display: 'flex',
-                justifyContent:
-                  content?.data?.position === 'left'
-                    ? 'space-between'
-                    : 'flex-end',
+                justifyContent: 'flex-end',
               }}>
               <span
                 style={{
@@ -209,6 +211,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             <div className={styles.msgFeedback}>
               <div className={styles.msgFeedbackIcons}>
                 <div
+                style={{cursor: 'pointer'}}
                   onClick={() =>
                     feedbackHandler({
                       like: 1,
@@ -222,6 +225,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   />
                 </div>
                 <div
+                style={{cursor: 'pointer'}}
                   onClick={() =>
                     feedbackHandler({
                       like: -1,
