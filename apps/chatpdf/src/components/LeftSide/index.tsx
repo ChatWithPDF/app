@@ -48,23 +48,24 @@ const LeftSide = () => {
       }
     };
 
-    Promise.all([
-      fetchPdf(
-        '/pdfs/Samagra_Leave_Policy_April 2023_Onwards.pdf',
-        'Samagra Leave Policy April 2023 Onwards',
-        'fb868d8e-e7fb-4b0e-9cc1-79d0e6d23ed4'
-      ),
-    ])
-      .then(() => {
-        setPdfList(pdfListTemp);
-        setSpinner(false);
-        setSelectedPdf(pdfListTemp[0]);
-      })
-      .catch((error) => {
-        toast.error('Error fetching PDFs');
-        console.error('Error fetching PDFs:', error);
-        setSpinner(false);
-      });
+      Promise.all([
+        fetchPdf(
+          '/pdfs/Samagra_Leave_Policy_April 2023_Onwards.pdf',
+          'Samagra Leave Policy April 2023 Onwards',
+          'fb868d8e-e7fb-4b0e-9cc1-79d0e6d23ed4'
+        ),
+      ])
+        .then(() => {
+          setPdfList(pdfListTemp);
+          setSpinner(false);
+          setSelectedPdf(pdfListTemp[0]);
+          setCurrentPdfId(pdfListTemp[0].id);
+        })
+        .catch((error) => {
+          toast.error('Error fetching PDFs');
+          console.error('Error fetching PDFs:', error);
+          setSpinner(false);
+        });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -186,7 +187,7 @@ const LeftSide = () => {
     <div className={styles.main}>
        <Toaster position="top-center" reverseOrder={false} />
       <div>
-        <div className={styles.dropzone}>
+        {/* <div className={styles.dropzone}>
           <Dropzone onDrop={onDrop}>
             {({ getRootProps, getInputProps }) => (
               <section>
@@ -204,7 +205,7 @@ const LeftSide = () => {
               </section>
             )}
           </Dropzone>
-        </div>
+        </div> */}
 
         <div className={styles.pdflist}>
           {pdfList.map((pdf: any, i: number) => (

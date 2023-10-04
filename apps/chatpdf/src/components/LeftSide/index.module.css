@@ -68,6 +68,12 @@
   overflow: auto;
 }
 
+@media only screen and (max-width: 600px) {
+  .pdflist{
+    padding-top: 50px;
+  }
+}
+
 .burgerIcon {
   width: 100%;
   text-align: center;
