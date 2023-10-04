@@ -92,7 +92,7 @@ body {
   z-index: 1;
 }
 .rpv-search__highlight--current {
-  /* background-color: var(--rpv-search__highlight--current-background-color); */
+  background-color: var(--rpv-search__highlight-background-color);
 }
 .rpv-search__popover {
   padding: 0 0.5rem;
