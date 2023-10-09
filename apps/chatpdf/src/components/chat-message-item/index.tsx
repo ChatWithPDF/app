@@ -21,9 +21,10 @@ import React, {
 } from 'react';
 
 import { toast } from 'react-hot-toast';
-
+import { Tooltip } from 'react-tooltip';
 import styles from './index.module.css';
 import RightIcon from '../../assets/icons/right.jsx';
+import infoIcon from '../../assets/icons/infoIcon.svg';
 import CopyText from '../../assets/icons/copy-text.svg';
 import MsgThumbsUp from '../../assets/icons/msg-thumbs-up.jsx';
 import MsgThumbsDown from '../../assets/icons/msg-thumbs-down.jsx';
@@ -174,6 +175,35 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 : styles.messageTriangleLeft
             }></div> */}
           <Bubble type="text">
+            {content?.data?.position === 'left' && (
+              <>
+                <div
+                  style={{
+                    marginLeft: 'auto',
+                    cursor: 'pointer',
+                    width: 'fit-content',
+                  }}
+                  data-tooltip-id="my-tooltip"
+                  data-tooltip-content={
+                    content?.data?.highlightText
+                      ? content.data.highlightText
+                          .map(
+                            //@ts-ignore
+                            (element, index) =>
+                              `CHUNK ${index + 1}: ${element}`
+                          )
+                          .join('\n')
+                      : ''
+                  }>
+                  <Tooltip
+                    id="my-tooltip"
+                    clickable
+                    className={styles.toolTip}
+                  />
+                  <Image src={infoIcon} alt="" width={20} height={20} />
+                </div>
+              </>
+            )}
             <span
               onClick={() => textHighlighter(content)}
               className="onHover"
@@ -211,7 +241,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             <div className={styles.msgFeedback}>
               <div className={styles.msgFeedbackIcons}>
                 <div
-                style={{cursor: 'pointer'}}
+                  style={{ cursor: 'pointer' }}
                   onClick={() =>
                     feedbackHandler({
                       like: 1,
@@ -225,7 +255,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   />
                 </div>
                 <div
-                style={{cursor: 'pointer'}}
+                  style={{ cursor: 'pointer' }}
                   onClick={() =>
                     feedbackHandler({
                       like: -1,
