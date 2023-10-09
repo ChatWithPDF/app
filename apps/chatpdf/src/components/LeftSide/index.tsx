@@ -52,7 +52,7 @@ const LeftSide = () => {
         fetchPdf(
           '/pdfs/Samagra_Leave_Policy_April 2023_Onwards.pdf',
           'Samagra Leave Policy April 2023 Onwards',
-          'fb868d8e-e7fb-4b0e-9cc1-79d0e6d23ed4'
+          'b8c4a434-e310-47df-adc8-0a3f1c553116'
         ),
       ])
         .then(() => {
