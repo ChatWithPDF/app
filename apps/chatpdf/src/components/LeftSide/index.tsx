@@ -210,6 +210,7 @@ const LeftSide = () => {
         <div className={styles.pdflist}>
           {pdfList.map((pdf: any, i: number) => (
             <div
+            style={{padding: collapsed ? '20px 0' : '20px'}}
               className={styles.pdfElement}
               key={i}
               onClick={() => selectPdf(pdf)}>
