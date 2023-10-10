@@ -199,7 +199,9 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                       ? 'white'
                       : 'var(--font)',
                   fontSize: '12px',
-                }}>
+                }}
+                className='font-regular'
+                >
                 {getFormatedTime(
                   content?.data?.sentTimestamp ||
                     content?.data?.repliedTimestamp

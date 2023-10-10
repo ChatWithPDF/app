@@ -45,11 +45,13 @@
   display: flex;
   align-items: center;
   margin: 1vh 0;
+  background-color: #5c5200;
+  font-family: Mulish-regular;
 }
 
 .pdfElement:hover {
   cursor: pointer;
-  background-color: #1677ff;
+  background-color: #5c5200;
   border-radius: 15px;
 }
 
@@ -64,8 +66,8 @@
 }
 
 .pdflist {
-  height: 90%;
-  overflow: auto;
+  /* height: 90%; */
+  /* overflow: auto; */
 }
 
 @media only screen and (max-width: 600px) {
@@ -89,7 +91,7 @@
 
 @media (max-width: 767px) {
   .main {
-    background-color: #001529;
+    background-color: #b99825;
     color: white;
     position: fixed;
     top: 0;

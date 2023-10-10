@@ -50,8 +50,8 @@ const LeftSide = () => {
 
       Promise.all([
         fetchPdf(
-          '/pdfs/Samagra_Leave_Policy_April 2023_Onwards.pdf',
-          'Samagra Leave Policy April 2023 Onwards',
+          '/pdfs/Combined_PDF.pdf',
+          'Samagra Policy April 2023 Onwards',
           'b8c4a434-e310-47df-adc8-0a3f1c553116'
         ),
       ])
@@ -210,6 +210,7 @@ const LeftSide = () => {
         <div className={styles.pdflist}>
           {pdfList.map((pdf: any, i: number) => (
             <div
+            style={{padding: collapsed ? '20px 0' : '20px'}}
               className={styles.pdfElement}
               key={i}
               onClick={() => selectPdf(pdf)}>

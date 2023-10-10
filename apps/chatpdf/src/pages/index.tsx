@@ -31,8 +31,8 @@ const Home: NextPage = () => {
         }}>
         <div
           style={{
-            backgroundColor: '#001529',
-            flex: collapsed ? '0.05' : '0.2',
+            backgroundColor: '#b99825',
+            flex: collapsed ? '0.05' : '0.3',
             color: 'white',
             padding: '1vh',
             transition: 'all 0.2s ease',
@@ -48,7 +48,7 @@ const Home: NextPage = () => {
         </div>
         <div
           style={{
-            flex: 1,
+            flex: 0.8,
             height: '100vh'
           }}>
           <NavBar />
@@ -56,9 +56,9 @@ const Home: NextPage = () => {
             id='chatUI'
             style={{
               position: 'fixed',
-              top: '70px',
+              top: '90px',
               bottom: '1vh',
-              width: '45vw',
+              width: '37vw',
             }}>
             <ChatUiWindow />
           </div>
