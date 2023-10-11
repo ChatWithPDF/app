@@ -26,7 +26,7 @@ const LaunchPage = () => {
       <div className={styles.topSection}>
         <div className={styles.content}>
           <div className={styles.logo}>
-            <Image src={logo} alt="Samagra logo" height={100} width={380} />
+            <Image src={logo} alt="Samagra logo" height={100} width={380} priority />
           </div>
           <div className={`${styles.title} ${animate ? styles.slideIn : styles.slideOut}`}>
             Samagra Bot
