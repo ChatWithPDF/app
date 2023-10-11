@@ -218,12 +218,12 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 color:
                   content?.data?.position === 'right' ? 'white' : 'var(--font)',
               }}>
-              {/* @ts-ignore */}
               <RichText
                 content={content.text.replace(
                   /\[(\d+)\]/g,
+                  // @ts-ignore
                   (match, p1) =>
-                    `<sup class="reference ${p1}" style="border: 1px solid #aba9a9; border-radius: 5px; padding: 1px 3px"><button>${p1}</button></sup>`
+                    `<sup class="reference ${p1}" style="margin-right: 2px; color: var(--secondary)"><button>${p1}</button></sup>`
                 )}
               />
             </span>
