@@ -26,7 +26,8 @@ const MiddleSide = () => {
 
   useEffect(() => {
     function splitStringsIntoChunks(stringsArray: string[]) {
-      if (!stringsArray[0]) return [""];
+      console.log("okie",stringsArray)
+      if (!stringsArray[0] || stringsArray[0].length === 0) return [""];
       const result = [];
 
       for (let i = 0; i < stringsArray.length; i++) {
@@ -51,8 +52,8 @@ const MiddleSide = () => {
     }
     console.log("keyword", splitStringsIntoChunks([keyword[0]]));
     console.log("keyword", keyword[0]);
-    keyword &&
-      highlight(splitStringsIntoChunks([keyword[0]?.replace(/\n/g, " ")]));
+    // keyword &&
+    //   highlight(splitStringsIntoChunks([keyword[0]?.replace(/\n/g, " ")?.replace(/\[\d+\]/g, '')]));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword]);
 

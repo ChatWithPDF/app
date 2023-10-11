@@ -69,7 +69,7 @@ const ContextProvider: FC<{
     }: {
       user: { name: string; id: string };
       msg: {
-        content: { title: string; choices: any; highlightText: string[] };
+        content: { title: string; choices: any; highlightText: any };
         messageId: string;
       };
       media: any;
@@ -197,7 +197,7 @@ const ContextProvider: FC<{
           userId: localStorage.getItem('userID'),
           messageId: uuidv4(),
           conversationId: sessionStorage.getItem('conversationId'),
-          pdfId: selectedPdf?.id,
+          // pdfId: selectedPdf?.id,
         };
 
         try {
@@ -213,17 +213,13 @@ const ContextProvider: FC<{
 
           // Handle response here
           console.log('hie', response.data);
-          const highlightText = response.data.context
-            ? response.data.context.map((obj: any) => obj.content)
-            : [''];
-          console.log('hie', highlightText);
           onMessageReceived({
             content: {
               title: response.data.output,
               msg_type: 'TEXT',
               choices: null,
               conversationId: sessionStorage.getItem('conversationId'),
-              highlightText,
+              highlightText: response?.data?.context,
             },
             messageId: response.data.id,
           });
@@ -235,7 +231,7 @@ const ContextProvider: FC<{
               msg_type: 'TEXT',
               choices: null,
               conversationId: sessionStorage.getItem('conversationId'),
-              highlightText: [''],
+              highlightText: null,
             },
             messageId: uuidv4(),
           });
@@ -245,7 +241,7 @@ const ContextProvider: FC<{
         }
       }
     },
-    [removeCookie, selectedPdf?.id, currentUser?.id, onMessageReceived]
+    [removeCookie, currentUser?.id, onMessageReceived]
   );
 
   const fetchIsDown = useCallback(async () => {

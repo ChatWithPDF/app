@@ -147,11 +147,38 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     [context, t]
   );
 
-  const textHighlighter = (content: any) => {
-    content?.data?.position === 'left' &&
-      content?.data?.highlightText &&
-      context?.setKeyword(content.data.highlightText || '');
-  };
+  // useEffect(() => {
+  //   // Add event listeners to the buttons
+  //   const buttons = document.querySelectorAll('.reference');
+  //   console.log("i ran", buttons);
+  //   buttons.forEach((button, index) => {
+  //     button.addEventListener('click', () => textHighlighter(content, button?.classList?.[1]));
+  //   });
+
+  //   return () => {
+  //     buttons.forEach((button, index) => {
+  //       button.removeEventListener('click', () => textHighlighter(content, button?.classList?.[1]));
+  //     });
+  //   };
+  // }, []);
+
+  // const textHighlighter = (content: any, id: any) => {
+  //   if(!id) return;
+  //   console.log("okie", id);
+  //   let desiredContent;
+  //   for (const item of content.data.highlightText) {
+  //     console.log("okie",item.id, id)
+  //     if (item.id == id) {
+  //       console.log("okie here")
+  //       desiredContent = item.content;
+  //       break;
+  //     }
+  //   }
+  //   console.log("okie", desiredContent)
+  //   content?.data?.position === 'left' &&
+  //     content?.data?.highlightText &&
+  //     context?.setKeyword('');
+  // };
 
   const { content, type } = message;
 
@@ -175,7 +202,6 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             }></div> */}
           <Bubble type="text">
             <span
-              onClick={() => textHighlighter(content)}
               className="onHover"
               style={{
                 fontWeight: 600,
@@ -183,7 +209,8 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 color:
                   content?.data?.position === 'right' ? 'white' : 'var(--font)',
               }}>
-              <RichText content={content.text} />
+              {/* @ts-ignore */}
+              <RichText content={content.text.replace(/\[(\d+)\]/g, (match, p1) => `<sup class="reference ${p1}" style="border: 1px solid #aba9a9; border-radius: 5px; padding: 1px 3px"><button>${p1}</button></sup>`)} />
             </span>
             <div
               style={{
