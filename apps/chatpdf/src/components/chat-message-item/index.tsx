@@ -147,38 +147,47 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     [context, t]
   );
 
-  // useEffect(() => {
-  //   // Add event listeners to the buttons
-  //   const buttons = document.querySelectorAll('.reference');
-  //   console.log("i ran", buttons);
-  //   buttons.forEach((button, index) => {
-  //     button.addEventListener('click', () => textHighlighter(content, button?.classList?.[1]));
-  //   });
+  useEffect(() => {
+    // Add event listeners to the buttons
+    const buttons = document.querySelectorAll('.reference');
+    console.log('i ran', buttons);
+    buttons.forEach((button, index) => {
+      button.addEventListener('click', () =>
+        textHighlighter(content, button?.classList?.[1])
+      );
+    });
 
-  //   return () => {
-  //     buttons.forEach((button, index) => {
-  //       button.removeEventListener('click', () => textHighlighter(content, button?.classList?.[1]));
-  //     });
-  //   };
-  // }, []);
+    return () => {
+      buttons.forEach((button, index) => {
+        button.removeEventListener('click', () =>
+          textHighlighter(content, button?.classList?.[1])
+        );
+      });
+    };
+  }, []);
 
-  // const textHighlighter = (content: any, id: any) => {
-  //   if(!id) return;
-  //   console.log("okie", id);
-  //   let desiredContent;
-  //   for (const item of content.data.highlightText) {
-  //     console.log("okie",item.id, id)
-  //     if (item.id == id) {
-  //       console.log("okie here")
-  //       desiredContent = item.content;
-  //       break;
-  //     }
-  //   }
-  //   console.log("okie", desiredContent)
-  //   content?.data?.position === 'left' &&
-  //     content?.data?.highlightText &&
-  //     context?.setKeyword('');
-  // };
+  const textHighlighter = (content: any, id: any) => {
+    if (!id) return;
+    let desiredItem = null;
+    if (content?.data?.highlightText) {
+      for (const item of content.data.highlightText) {
+        console.log('okie', item.id, id, item.content);
+        if (item.id == id) {
+          console.log('okie here');
+          desiredItem = item;
+          break;
+        }
+      }
+      console.log('okie', desiredItem);
+      if(content?.data?.position === 'left' && content?.data?.highlightText){
+        if(context?.keyword && context?.keyword?.id !== desiredItem?.id){
+          context?.setKeyword(desiredItem);
+        }else if(!context?.keyword){
+          context?.setKeyword(desiredItem);
+        }
+      }
+    }
+  };
 
   const { content, type } = message;
 
@@ -210,7 +219,13 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   content?.data?.position === 'right' ? 'white' : 'var(--font)',
               }}>
               {/* @ts-ignore */}
-              <RichText content={content.text.replace(/\[(\d+)\]/g, (match, p1) => `<sup class="reference ${p1}" style="border: 1px solid #aba9a9; border-radius: 5px; padding: 1px 3px"><button>${p1}</button></sup>`)} />
+              <RichText
+                content={content.text.replace(
+                  /\[(\d+)\]/g,
+                  (match, p1) =>
+                    `<sup class="reference ${p1}" style="border: 1px solid #aba9a9; border-radius: 5px; padding: 1px 3px"><button>${p1}</button></sup>`
+                )}
+              />
             </span>
             <div
               style={{
@@ -227,8 +242,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                       : 'var(--font)',
                   fontSize: '12px',
                 }}
-                className='font-regular'
-                >
+                className="font-regular">
                 {getFormatedTime(
                   content?.data?.sentTimestamp ||
                     content?.data?.repliedTimestamp
@@ -240,7 +254,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             <div className={styles.msgFeedback}>
               <div className={styles.msgFeedbackIcons}>
                 <div
-                style={{cursor: 'pointer'}}
+                  style={{ cursor: 'pointer' }}
                   onClick={() =>
                     feedbackHandler({
                       like: 1,
@@ -254,7 +268,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   />
                 </div>
                 <div
-                style={{cursor: 'pointer'}}
+                  style={{ cursor: 'pointer' }}
                   onClick={() =>
                     feedbackHandler({
                       like: -1,

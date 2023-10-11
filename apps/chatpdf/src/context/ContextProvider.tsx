@@ -57,7 +57,7 @@ const ContextProvider: FC<{
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const audioRef = useRef(null);
   const [currentPdfId, setCurrentPdfId] = useState('');
-  const [keyword, setKeyword] = useState([]);
+  const [keyword, setKeyword] = useState();
 
   console.log(messages);
 

@@ -4010,9 +4010,9 @@
   dependencies:
     "@react-pdf-viewer/core" "3.12.0"
 
-"@react-pdf-viewer/page-navigation@3.12.0":
+"@react-pdf-viewer/page-navigation@3.12.0", "@react-pdf-viewer/page-navigation@^3.12.0":
   version "3.12.0"
-  resolved "https://registry.npmjs.org/@react-pdf-viewer/page-navigation/-/page-navigation-3.12.0.tgz"
+  resolved "https://registry.yarnpkg.com/@react-pdf-viewer/page-navigation/-/page-navigation-3.12.0.tgz#399f1cc06e5dd8b40d5e44e4c57bcb6c84bced62"
   integrity sha512-tVEJ48Dd5kajV1nKkrPWijglJRNBiKBTyYDKVexhiRdTHUP1f6QQXiSyDgCUb0IGSZeJzOJb1h7ApKHe8OTtuw==
   dependencies:
     "@react-pdf-viewer/core" "3.12.0"
@@ -9370,10 +9370,10 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
-custom-pdf-search@3.12.36:
-  version "3.12.36"
-  resolved "https://registry.yarnpkg.com/custom-pdf-search/-/custom-pdf-search-3.12.36.tgz#511a39d603307afd20bfb528b6f4a27bc38ec2c0"
-  integrity sha512-3+3jhUEtkWnaKhUMtHoSDdpxbDPIg9cfdJtGRAwvhjdONZLkK5G5JDyVgetDdji2pX51End6G8nQO7qka4tcxQ==
+custom-pdf-search@3.12.37:
+  version "3.12.37"
+  resolved "https://registry.yarnpkg.com/custom-pdf-search/-/custom-pdf-search-3.12.37.tgz#773cc6d6c9e0d735af03f08454aab01ff175a8c0"
+  integrity sha512-fYBacTnRU1JNj/MCR3X2GTuJTknYeUbQb8ydQNXHrdhji6QcLe+KF2nC+nIcIeiD1SdrjMyxs079LrNPGfNCFw==
   dependencies:
     "@react-pdf-viewer/core" "3.12.0"
 

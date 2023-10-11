@@ -11,7 +11,8 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { searchPlugin } from "custom-pdf-search";
-// import '@react-pdf-viewer/search_/lib/styles/index.css';
+import { pageNavigationPlugin } from '@react-pdf-viewer/page-navigation';
+import '@react-pdf-viewer/page-navigation/lib/styles/index.css';
 import { Spinner } from "@chakra-ui/react";
 
 const MiddleSide = () => {
@@ -19,10 +20,12 @@ const MiddleSide = () => {
   const { selectedPdf, uploadingPdf, uploadProgress, processingPdf, keyword } =
     context;
   const newPlugin = defaultLayoutPlugin();
+  const pageNavigationPluginInstance = pageNavigationPlugin();
   console.log("hie", selectedPdf);
 
   const searchPluginInstance = searchPlugin();
   const { highlight } = searchPluginInstance;
+  const {jumpToPage} = pageNavigationPluginInstance;
 
   useEffect(() => {
     function splitStringsIntoChunks(stringsArray: string[]) {
@@ -50,10 +53,12 @@ const MiddleSide = () => {
 
       return result;
     }
-    console.log("keyword", splitStringsIntoChunks([keyword[0]]));
-    console.log("keyword", keyword[0]);
-    // keyword &&
-    //   highlight(splitStringsIntoChunks([keyword[0]?.replace(/\n/g, " ")?.replace(/\[\d+\]/g, '')]));
+    keyword && console.log("keywordss", splitStringsIntoChunks([keyword.content.replace(/\n/g, " ")]));
+    keyword && console.log("keywordss", keyword);
+    keyword && console.log("keyword", keyword?.metaData?.startPage);
+    keyword &&
+    highlight(splitStringsIntoChunks([keyword.content.replace(/\n/g, " ")]));
+    keyword && jumpToPage(keyword.metaData.startPage - 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword]);
 
@@ -81,6 +86,7 @@ const MiddleSide = () => {
         ) : selectedPdf && selectedPdf.preview ? (
           <div
             style={{
+              height: '95vh',
               boxShadow:
                 "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 23px -6px rgb(0 0 0 / 0.1)",
               padding: "10px",
@@ -88,8 +94,8 @@ const MiddleSide = () => {
             }}
           >
             <Viewer
-              defaultScale={SpecialZoomLevel.PageFit}
-              plugins={[newPlugin, searchPluginInstance]}
+              // defaultScale={SpecialZoomLevel.PageFit}
+              plugins={[newPlugin, searchPluginInstance, pageNavigationPluginInstance]}
               fileUrl={selectedPdf.preview}
               initialPage={0}
               renderLoader={(percentages: number) => (
