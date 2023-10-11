@@ -37,6 +37,10 @@
 }
 
 @media (max-width: 767px) {
+.topSection{
+  border-radius: 0 0 10% 10%;
+}
+
   .logo img {
     max-width: 100%;
     height: auto;
