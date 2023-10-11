@@ -21,9 +21,9 @@ const Home: NextPage = () => {
   const [showLaunchPage, setShowLaunchPage] = useState(true);
 
   useEffect(() => {
-    // setTimeout(() => {
-    //   setShowLaunchPage(!showLaunchPage);
-    // }, 2200);
+    setTimeout(() => {
+      setShowLaunchPage(!showLaunchPage);
+    }, 2200);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
