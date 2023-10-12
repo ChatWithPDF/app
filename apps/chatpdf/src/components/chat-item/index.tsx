@@ -9,6 +9,7 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { AppContext } from '../../context';
 import { useLocalization } from '../../hooks';
+import { useCookies } from 'react-cookie';
 
 const ChatItem: React.FC<ChatItemPropsType> = ({
   name,
@@ -18,6 +19,7 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
   const context = useContext(AppContext);
   const t = useLocalization();
   const [isConversationDeleted, setIsConversationDeleted] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
 
   const handleChatPage = useCallback(() => {
     sessionStorage.setItem('conversationId', conversationId || 'null');
@@ -33,7 +35,7 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
           `${process.env.NEXT_PUBLIC_BASE_URL}/user/conversations/delete/${conversationId}`,
           {
             headers: {
-              authorization: `Bearer ${localStorage.getItem('auth')}`,
+              authorization: `Bearer ${cookies.access_token}`,
             },
           }
         )

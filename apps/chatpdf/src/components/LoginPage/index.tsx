@@ -85,7 +85,7 @@ const LoginPage = () => {
               const decodedToken = jwt_decode(data.result.data.user.token);
               //@ts-ignore
               localStorage.setItem('userID', decodedToken?.sub);
-              localStorage.setItem('auth', data.result.data.user.token);
+              // localStorage.setItem('auth', data.result.data.user.token);
 
               fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user/profile/${phone}`)
                 .then((response) => response.json())

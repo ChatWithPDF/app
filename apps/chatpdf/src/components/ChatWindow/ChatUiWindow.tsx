@@ -145,6 +145,8 @@ const ChatUiWindow: React.FC = () => {
     <>
       <div style={{ height: '100%', width: '100%' }}>
         <Chat
+          quickReplies={[{name:"When is the next holiday?"}, {name:"How can I create a good one-pager?"}, {name:"What is a Samagra case study?"}, {name: "I've used 11 leaves this year; how many can I carry over?"}]}
+          onQuickReplyClick={(e) => handleSend('text', e.name)}
           btnColor="var(--secondary)"
           background="var(--bg-color)"
           disableSend={context?.loading}

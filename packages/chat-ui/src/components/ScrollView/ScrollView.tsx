@@ -15,7 +15,8 @@ export type ScrollViewProps<T> = Pick<ScrollViewItemProps, 'effect' | 'onInterse
   children?: React.ReactNode;
 };
 
-const hasControls = !canUse('touch');
+// const hasControls = !canUse('touch');
+const hasControls = true;
 
 export interface ScrollViewHandle {
   scrollTo: (coord: { x?: number; y?: number }) => void;
@@ -91,7 +92,7 @@ export const ScrollView = React.forwardRef<ScrollViewHandle, ScrollViewProps<any
           aria-label="Previous"
           onClick={handlePrev}
         />
-      )}
+       )} 
       <div className="ScrollView-scroller" ref={scrollerRef} onScroll={onScroll}>
         <div className="ScrollView-inner">
           {data.map((item, i) => (
@@ -111,14 +112,14 @@ export const ScrollView = React.forwardRef<ScrollViewHandle, ScrollViewProps<any
           ) : null}
         </div>
       </div>
-      {hasControls && (
+    {hasControls && ( 
         <IconButton
           className="ScrollView-control"
           icon="chevron-right"
           aria-label="Next"
           onClick={handleNext}
         />
-      )}
+       )} 
     </div>
   );
 });

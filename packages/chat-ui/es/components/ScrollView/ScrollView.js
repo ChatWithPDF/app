@@ -5,8 +5,8 @@ import React, { useRef, useImperativeHandle, useCallback } from 'react';
 import clsx from 'clsx';
 import { Item } from './Item';
 import { IconButton } from '../IconButton';
-import canUse from '../../utils/canUse';
-var hasControls = !canUse('touch');
+// const hasControls = !canUse('touch');
+var hasControls = true;
 export var ScrollView = /*#__PURE__*/React.forwardRef(function (props, ref) {
   var className = props.className,
     fullWidth = props.fullWidth,

@@ -9,6 +9,7 @@ import { useContext, useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
 import LaunchPage from '../components/LaunchPage';
 import LoginPage from '../components/LoginPage';
+import { useLogin } from '../hooks';
 
 const ChatUiWindow = dynamic(
   () => import('../components/ChatWindow/ChatUiWindow'),
@@ -18,8 +19,15 @@ const ChatUiWindow = dynamic(
 const Home: NextPage = () => {
   const t = useLocalization();
   const context = useContext(AppContext);
+  const { isAuthenticated, login } = useLogin();
   const { collapsed, isLoggedIn } = context;
   const [showLaunchPage, setShowLaunchPage] = useState(true);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      login();
+    }
+  }, [isAuthenticated, login]);
 
   useEffect(() => {
     setTimeout(() => {

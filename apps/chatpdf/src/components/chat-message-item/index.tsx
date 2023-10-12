@@ -34,6 +34,7 @@ import { useLocalization } from '../../hooks/useLocalization';
 import { getReactionUrl } from '../../utils/getUrls';
 import Image from 'next/image';
 import { Button } from '@chakra-ui/react';
+import { useCookies } from 'react-cookie';
 
 const getToastMessage = (t: any, reaction: number): string => {
   if (reaction === 1) return t('toast.reaction_like');
@@ -47,6 +48,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   const t = useLocalization();
   const context = useContext(AppContext);
   const [reaction, setReaction] = useState(message?.content?.data?.reaction);
+  const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
 
   useEffect(() => {
     setReaction(message?.content?.data?.reaction);
@@ -59,7 +61,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       axios
         .get(url, {
           headers: {
-            authorization: `Bearer ${localStorage.getItem('auth')}`,
+            authorization: `Bearer ${cookies.access_token}`,
           },
         })
         .then((res: any) => {
