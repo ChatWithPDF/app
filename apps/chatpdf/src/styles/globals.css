@@ -169,3 +169,8 @@ body {
   font-family: Mulish-Regular !important;
   font-size: 14px !important;
 }
+.QuickReply{
+  background: var(--primarydarkblue) !important;
+  color: white !important;
+  font-family: Mulish-demi !important;
+}
