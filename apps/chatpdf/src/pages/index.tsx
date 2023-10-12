@@ -8,6 +8,7 @@ import { AppContext } from '../context';
 import { useContext, useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
 import LaunchPage from '../components/LaunchPage';
+import LoginPage from '../components/LoginPage';
 
 const ChatUiWindow = dynamic(
   () => import('../components/ChatWindow/ChatUiWindow'),
@@ -17,19 +18,19 @@ const ChatUiWindow = dynamic(
 const Home: NextPage = () => {
   const t = useLocalization();
   const context = useContext(AppContext);
-  const { collapsed } = context;
+  const { collapsed, isLoggedIn } = context;
   const [showLaunchPage, setShowLaunchPage] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
       setShowLaunchPage(!showLaunchPage);
     }, 2200);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (showLaunchPage) {
     return <LaunchPage />;
-  } else
+  } else if (isLoggedIn) {
     return (
       <>
         <Head>
@@ -44,11 +45,10 @@ const Home: NextPage = () => {
           <div
             style={{
               backgroundColor: '#b99825',
-              flex: collapsed ? '0.05' : '0',
+              flex: collapsed ? '0.05' : '0.2',
               color: 'white',
               padding: '1vh',
               transition: 'all 0.2s ease',
-              display: 'none',
             }}>
             <LeftSide />
           </div>
@@ -71,7 +71,7 @@ const Home: NextPage = () => {
                 position: 'fixed',
                 top: '90px',
                 bottom: '1vh',
-                width: '41vw',
+                width: '36vw',
               }}>
               <ChatUiWindow />
             </div>
@@ -94,5 +94,8 @@ const Home: NextPage = () => {
         `}</style>
       </>
     );
+  } else {
+    return <LoginPage />;
+  }
 };
 export default Home;

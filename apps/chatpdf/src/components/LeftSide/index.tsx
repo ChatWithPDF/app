@@ -8,6 +8,7 @@ import { AppContext } from '../../context';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
+import { useCookies } from 'react-cookie';
 
 const LeftSide = () => {
   const context = useContext(AppContext);
@@ -26,6 +27,7 @@ const LeftSide = () => {
     currentPdfId,
     setCurrentPdfId,
   } = context;
+  const [cookie, setCookie, removeCookie] = useCookies();
 
   const handleToggleCollapse = () => {
     setCollapsed((prevCollapsed: any) => !prevCollapsed);
@@ -183,6 +185,14 @@ const LeftSide = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPdfId]);
 
+  const logoutHandler = () => {
+    removeCookie('access_token', { path: '/' });
+    localStorage.clear();
+    sessionStorage.clear();
+    context?.setMessages([]);
+    context?.setIsLoggedIn(false);
+  }
+
   return (
     <div className={styles.main}>
        <Toaster position="top-center" reverseOrder={false} />
@@ -227,8 +237,11 @@ const LeftSide = () => {
           ))}
         </div>
       </div>
+      <div>
+        <button className={styles.logout} onClick={logoutHandler}>Logout</button>
       <div className={styles.burgerIcon} onClick={handleToggleCollapse}>
         <BurgerIcon color="white" />
+      </div>
       </div>
     </div>
   );

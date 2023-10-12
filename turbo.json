@@ -4,7 +4,9 @@
     "ANALYZE",
     "NEXT_PUBLIC_BASE_URL",
     "NODE_ENV",
-    "NEXT_PUBLIC_ENV"
+    "NEXT_PUBLIC_ENV",
+    "NEXT_PUBLIC_OTP_BASE_URL",
+    "NEXT_PUBLIC_USER_SERVICE_APP_ID"
   ],
 
   "globalDependencies": ["**/.env.*local"],

@@ -58,6 +58,7 @@ const ContextProvider: FC<{
   const audioRef = useRef(null);
   const [currentPdfId, setCurrentPdfId] = useState('');
   const [keyword, setKeyword] = useState();
+  const [isLoggedIn, setIsLoggedIn] = useState(cookie['access_token'] && localStorage.getItem('userID'));
 
   console.log(messages);
 
@@ -197,6 +198,7 @@ const ContextProvider: FC<{
           userId: localStorage.getItem('userID'),
           messageId: uuidv4(),
           conversationId: sessionStorage.getItem('conversationId'),
+          mobileNumber: localStorage.getItem('phoneNumber'),
           // pdfId: selectedPdf?.id,
         };
 
@@ -326,6 +328,8 @@ const ContextProvider: FC<{
       setCurrentPdfId,
       keyword,
       setKeyword,
+      isLoggedIn,
+      setIsLoggedIn
     }),
     [
       locale,
@@ -366,6 +370,8 @@ const ContextProvider: FC<{
       setCurrentPdfId,
       keyword,
       setKeyword,
+      isLoggedIn,
+      setIsLoggedIn
     ]
   );
 
