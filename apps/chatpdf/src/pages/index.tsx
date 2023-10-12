@@ -47,7 +47,6 @@ const Home: NextPage = () => {
               backgroundColor: '#b99825',
               flex: collapsed ? '0.05' : '0.2',
               color: 'white',
-              padding: '1vh',
               transition: 'all 0.2s ease',
             }}>
             <LeftSide />

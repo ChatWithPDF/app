@@ -3,6 +3,7 @@ import Dropzone from 'react-dropzone';
 import styles from './index.module.css';
 import messageIcon from '../../assets/icons/message.svg';
 import BurgerIcon from '../../assets/icons/burger-menu';
+import logo from '../../assets/images/logo.png';
 import Image from 'next/image';
 import { AppContext } from '../../context';
 import axios from 'axios';
@@ -12,6 +13,8 @@ import { useCookies } from 'react-cookie';
 
 const LeftSide = () => {
   const context = useContext(AppContext);
+  const [mobile, setMobile] = useState(window.innerWidth < 768);
+  const [username, setUsername] = useState(localStorage.getItem('username'));
   const [spinner, setSpinner] = useState(true);
   const {
     pdfList,
@@ -28,6 +31,26 @@ const LeftSide = () => {
     setCurrentPdfId,
   } = context;
   const [cookie, setCookie, removeCookie] = useCookies();
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('resize', handleWindowSizeChange);
+    return () => {
+      window.removeEventListener('resize', handleWindowSizeChange);
+    };
+  }, []);
+
+  const handleWindowSizeChange = () => {
+    if (window.innerWidth < 768) {
+      setMobile(true);
+    } else setMobile(false);
+  };
 
   const handleToggleCollapse = () => {
     setCollapsed((prevCollapsed: any) => !prevCollapsed);
@@ -50,24 +73,24 @@ const LeftSide = () => {
       }
     };
 
-      Promise.all([
-        fetchPdf(
-          '/pdfs/Combined_PDF.pdf',
-          'Samagra Policy April 2023 Onwards',
-          'b8c4a434-e310-47df-adc8-0a3f1c553116'
-        ),
-      ])
-        .then(() => {
-          setPdfList(pdfListTemp);
-          setSpinner(false);
-          setSelectedPdf(pdfListTemp[0]);
-          setCurrentPdfId(pdfListTemp[0].id);
-        })
-        .catch((error) => {
-          toast.error('Error fetching PDFs');
-          console.error('Error fetching PDFs:', error);
-          setSpinner(false);
-        });
+    Promise.all([
+      fetchPdf(
+        '/pdfs/Combined_PDF.pdf',
+        'Samagra Policy April 2023 Onwards',
+        'b8c4a434-e310-47df-adc8-0a3f1c553116'
+      ),
+    ])
+      .then(() => {
+        setPdfList(pdfListTemp);
+        setSpinner(false);
+        setSelectedPdf(pdfListTemp[0]);
+        setCurrentPdfId(pdfListTemp[0].id);
+      })
+      .catch((error) => {
+        toast.error('Error fetching PDFs');
+        console.error('Error fetching PDFs:', error);
+        setSpinner(false);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -141,7 +164,7 @@ const LeftSide = () => {
 
   // Method to select a PDF
   const selectPdf = (pdf: any, clearMsg?: boolean) => {
-    if(!pdf) return;
+    if (!pdf) return;
     if (clearMsg === undefined) clearMsg = true;
 
     if (context?.loading) {
@@ -150,11 +173,11 @@ const LeftSide = () => {
     }
     // Revoke the URL of the currently-selected PDF, if there is one and clear the messages
     if (selectedPdf) {
-      if (pdf.id === currentPdfId){ 
+      if (pdf.id === currentPdfId) {
         // If current selected pdf is selected again, return
-        toast.error("This PDF is already selected!")
+        toast.error('This PDF is already selected!');
         return;
-      } 
+      }
       URL.revokeObjectURL(selectedPdf.preview);
       clearMsg && setMessages([]);
     }
@@ -172,9 +195,9 @@ const LeftSide = () => {
       p.file.name === pdf.file.name ? newPdf : p
     );
     setPdfList(newPdfList);
-    
+
     // Run only for mobile view
-    window.innerWidth < 768 && setCollapsed((prev:any) => !prev);
+    window.innerWidth < 768 && setCollapsed((prev: any) => !prev);
   };
 
   useEffect(() => {
@@ -191,11 +214,11 @@ const LeftSide = () => {
     sessionStorage.clear();
     context?.setMessages([]);
     context?.setIsLoggedIn(false);
-  }
+  };
 
   return (
     <div className={styles.main}>
-       <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="top-center" reverseOrder={false} />
       <div>
         {/* <div className={styles.dropzone}>
           <Dropzone onDrop={onDrop}>
@@ -217,10 +240,12 @@ const LeftSide = () => {
           </Dropzone>
         </div> */}
 
+        {username && <div className={styles.username}>Hi {username}!</div>}
+
         <div className={styles.pdflist}>
           {pdfList.map((pdf: any, i: number) => (
             <div
-            style={{padding: collapsed ? '20px 0' : '20px'}}
+              style={{ padding: collapsed ? '10px 0' : '5px' }}
               className={styles.pdfElement}
               key={i}
               onClick={() => selectPdf(pdf)}>
@@ -231,17 +256,24 @@ const LeftSide = () => {
               </div>
               <div className={styles.mobileView}>{pdf.file.name}</div>
               {!collapsed && (
-              <div className={styles.pdfName}>{pdf.file.name}</div>
+                <div className={styles.pdfName}>{pdf.file.name}</div>
               )}
             </div>
           ))}
         </div>
       </div>
       <div>
-        <button className={styles.logout} onClick={logoutHandler}>Logout</button>
-      <div className={styles.burgerIcon} onClick={handleToggleCollapse}>
-        <BurgerIcon color="white" />
-      </div>
+        <button className={styles.logout} onClick={logoutHandler}>
+          Logout
+        </button>
+        {mobile && (
+          <div className={styles.burgerIcon} onClick={handleToggleCollapse}>
+            <BurgerIcon color="white" />
+          </div>
+        )}
+        <div className={styles.logo}>
+          <Image src={logo} alt="Samagra logo" layout="responsive" />
+        </div>
       </div>
     </div>
   );
