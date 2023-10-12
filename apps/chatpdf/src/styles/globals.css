@@ -27,6 +27,9 @@
 .font-regular {
   font-family: Mulish-regular !important;
 }
+.font-bold {
+  font-family: Mulish-bold !important;
+}
 
 ::-webkit-scrollbar {
   width: 5px;
@@ -55,6 +58,9 @@
   --red: #be0f39;
   --golden: #d4c17b;
   --bg-color: #fff;
+}
+.font-primary {
+  color: var(--primarydarkblue);
 }
 
 body {
