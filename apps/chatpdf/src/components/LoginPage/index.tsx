@@ -49,6 +49,7 @@ const LoginPage = () => {
 
   const login = () => {
     if(navigator.onLine){
+      setLoginDisabled(true);
       const inputOTP: string = input1 + input2 + input3 + input4;
       if (inputOTP.length === 4) {
         fetch(
@@ -91,6 +92,7 @@ const LoginPage = () => {
               }, 10);
           
             } else {
+              setLoginDisabled(false);
               toast.error('Incorrect OTP');
             }
           })
