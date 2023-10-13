@@ -76,7 +76,7 @@ const LeftSide = () => {
     Promise.all([
       fetchPdf(
         '/pdfs/Combined_PDF.pdf',
-        'Samagra Policy April 2023 Onwards',
+        'Samagra Resources',
         'b8c4a434-e310-47df-adc8-0a3f1c553116'
       ),
     ])

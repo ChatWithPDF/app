@@ -32,6 +32,7 @@
     "chatui": "*",
     "cross-env": "^7.0.3",
     "custom-pdf-search": "3.12.37",
+    "firebase": "^9.19.1",
     "framer-motion": "^6.3.15",
     "js-packages": "*",
     "jsonwebtoken": "^8.5.1",

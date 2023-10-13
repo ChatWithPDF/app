@@ -17,10 +17,26 @@ import { v4 as uuidv4 } from 'uuid';
 import toast from 'react-hot-toast';
 import RenderVoiceRecorder from '../recorder/RenderVoiceRecorder';
 import NavBar from '../NavBar';
+import { logEvent, setUserProperties } from 'firebase/analytics';
+import { analytics } from '../../utils/firebase';
 
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
   const context = useContext(AppContext);
+
+  useEffect(() => {
+    // should be logged in, should have phone number, should not trigger again in one session and should have username
+    if(context?.isLoggedIn && localStorage.getItem('phoneNumber') && !sessionStorage.getItem('triggered') && localStorage.getItem('username')){
+      //@ts-ignore
+      setUserProperties(analytics, {name: localStorage.getItem('username')})
+      //@ts-ignore
+      logEvent(analytics, localStorage.getItem('phoneNumber'), {
+        username: localStorage.getItem('username')
+      });
+      sessionStorage.setItem('triggered', 'true');
+    }
+  }, [context?.isLoggedIn])
+  
 
   const normalizedChat = (chats: any): any => {
     console.log('in normalized');
