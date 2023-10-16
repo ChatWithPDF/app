@@ -87,10 +87,14 @@ const LoginPage = () => {
               localStorage.setItem("userID", decodedToken?.sub);
               // localStorage.setItem('auth', data.result.data.user.token);
 
-              fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user/profile/${phone}`)
+              fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user/profile/${phone}`, {
+                headers: {
+                  Authorization: `Bearer ${data.result.data.user.token}`
+                }
+              })
                 .then((response) => response.json())
                 .then((data) => {
-                  localStorage.setItem("username", data.firstName);
+                  data.firstName && localStorage.setItem("username", data.firstName);
                   context?.setIsLoggedIn(true);
                 })
                 .catch((err) => {

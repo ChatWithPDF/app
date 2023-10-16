@@ -166,6 +166,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
         );
       });
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const textHighlighter = (content: any, id: any) => {
