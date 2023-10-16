@@ -38,11 +38,11 @@
   background-color: #5c5200;
 }
 
-.pdfElement:hover {
+/* .pdfElement:hover {
   cursor: pointer;
   background-color: #5c5200;
   border-radius: 15px;
-}
+} */
 
 .imageContainer {
   display: flex;
@@ -57,6 +57,29 @@
 .pdflist {
   /* height: 90%; */
   /* overflow: auto; */
+}
+
+.chatHistoryTitle {
+  font-size: 12px;
+  font-family: Mulish-bold;
+  color: white;
+}
+
+.chatList {
+  overflow-y: auto;
+  height: 60vh;
+}
+
+.chatItem {
+  padding: 5px 2px;
+  margin: 5px 0;
+  background-color: #5c5200;
+  display: flex;
+}
+
+.chatItem:hover {
+  border-radius: 15px;
+  cursor: pointer;
 }
 
 .logout {

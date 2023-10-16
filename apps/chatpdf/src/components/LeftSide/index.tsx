@@ -10,6 +10,8 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
 import { useCookies } from 'react-cookie';
+import { v4 as uuidv4 } from 'uuid';
+import deleteIcon from '../../assets/icons/delete.svg';
 
 const LeftSide = () => {
   const context = useContext(AppContext);
@@ -24,6 +26,7 @@ const LeftSide = () => {
     setUploadingPdf,
     setUploadProgress,
     setProcessingPdf,
+    messages,
     setMessages,
     collapsed,
     setCollapsed,
@@ -31,6 +34,29 @@ const LeftSide = () => {
     setCurrentPdfId,
   } = context;
   const [cookie, setCookie, removeCookie] = useCookies();
+  const [conversations, setConversations] = useState([]);
+
+  const getConversations = () => {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/conversations`, {
+        headers: {
+          Authorization: `Bearer ${cookie['access_token']}`,
+        },
+      })
+      .then((res) => {
+        console.log('history', res.data);
+        setConversations(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error('Could not load your chat history!');
+      });
+  };
+
+  useEffect(() => {
+    getConversations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages]);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -216,6 +242,77 @@ const LeftSide = () => {
     context?.setIsLoggedIn(false);
   };
 
+  const deleteConversation = () => {
+    const conversationId = sessionStorage.getItem('conversationId');
+    axios
+      .get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/user/conversations/delete/${conversationId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookie['access_token']}`,
+          },
+        }
+      )
+      .then((res) => {
+        getConversations();
+        const newConversationId = uuidv4();
+        sessionStorage.setItem('conversationId', newConversationId);
+        setMessages([]);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error('Could not delete the conversation!');
+      });
+  };
+
+  const convChangeHandler = (conv: any) => {
+    sessionStorage.setItem('conversationId', conv?.conversationId);
+    axios
+      .get(
+        `${
+          process.env.NEXT_PUBLIC_BASE_URL
+        }/user/chathistory/${sessionStorage.getItem('conversationId')}`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookie['access_token']}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log('chathistory', res.data);
+        const conversationId = sessionStorage.getItem('conversationId');
+        const history = res?.data
+          .filter(
+            (item: any) =>
+              conversationId === 'null' ||
+              item.conversationId === conversationId
+          )
+          .flatMap((item: any) =>
+            [
+              item.query?.length && {
+                text: item.query,
+                position: 'right',
+                repliedTimestamp: item.createdAt,
+                messageId: uuidv4(),
+              },
+              {
+                text: item.response,
+                position: 'left',
+                sentTimestamp: item.createdAt,
+                reaction: item.reaction,
+                msgId: item.id,
+                messageId: item.id,
+              },
+            ].filter(Boolean)
+          );
+        setMessages(history);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error('Failed to load chat!');
+      });
+  };
+
   return (
     <div className={styles.main}>
       <Toaster position="top-center" reverseOrder={false} />
@@ -245,7 +342,7 @@ const LeftSide = () => {
         <div className={styles.pdflist}>
           {pdfList.map((pdf: any, i: number) => (
             <div
-              style={{ padding: collapsed ? '10px 0' : '5px' }}
+              style={{ padding: collapsed ? '10px 0' : '5px 2px' }}
               className={styles.pdfElement}
               key={i}
               onClick={() => selectPdf(pdf)}>
@@ -260,6 +357,42 @@ const LeftSide = () => {
               )}
             </div>
           ))}
+        </div>
+        <div className={styles.chatList}>
+          {conversations.length > 0 && (
+            <div className={styles.chatHistoryTitle}>Previous chats</div>
+          )}
+          {conversations.map((conv: any, index: number) => {
+            return (
+              <>
+                {/* @ts-ignore */}
+                <div
+                  className={styles.chatItem}
+                  onClick={() => convChangeHandler(conv)}>
+                  <p
+                    style={{
+                      flex:
+                        sessionStorage.getItem('conversationId') ===
+                        conv?.conversationId
+                          ? 0.9
+                          : 1,
+                    }}>
+                    {conv.query}
+                  </p>
+                  {sessionStorage.getItem('conversationId') ===
+                    conv?.conversationId && (
+                    <Image
+                      src={deleteIcon}
+                      alt="deleteIcon"
+                      width={15}
+                      height={15}
+                      onClick={deleteConversation}
+                    />
+                  )}
+                </div>
+              </>
+            );
+          })}
         </div>
       </div>
       <div>
