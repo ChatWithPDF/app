@@ -48,11 +48,9 @@ function NavBar() {
 
   return (
     <div className={styles.navbar}>
-      {context?.collapsed && (
-        <div className={styles.mobileView}>
-          <LeftSide />
-        </div>
-      )}
+      <div className={styles.mobileView}>
+        <LeftSide show={context?.collapsed} />
+      </div>
       <div className={styles.hamburgerIcon} onClick={toggleMobileMenu}>
         <HamburgerIcon color={context?.collapsed ? 'white' : 'black'} />
       </div>

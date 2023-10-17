@@ -2,26 +2,27 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @font-face {
   font-family: Mulish-bold;
-  src: url("../assets/fonts/Mulish-Bold.ttf");
+  src: url('../assets/fonts/Mulish-Bold.ttf');
   font-display: swap;
 }
 @font-face {
   font-family: Mulish-demi;
-  src: url("../assets/fonts/Mulish-Demi.ttf");
+  src: url('../assets/fonts/Mulish-Demi.ttf');
   font-display: swap;
 }
 @font-face {
   font-family: Mulish-medium;
-  src: url("../assets/fonts/Mulish-Medium.ttf");
+  src: url('../assets/fonts/Mulish-Medium.ttf');
   font-display: swap;
 }
 @font-face {
   font-family: Mulish-regular;
-  src: url("../assets/fonts/Mulish-Regular.ttf");
+  src: url('../assets/fonts/Mulish-Regular.ttf');
   font-display: swap;
 }
 .font-regular {
@@ -169,7 +170,7 @@ body {
   font-family: Mulish-Regular !important;
   font-size: 14px !important;
 }
-.QuickReply{
+.QuickReply {
   background: var(--primarydarkblue) !important;
   color: white !important;
   font-family: Mulish-demi !important;

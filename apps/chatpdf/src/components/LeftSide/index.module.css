@@ -4,12 +4,19 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 5px;
 }
 
 .username {
+  margin: 5px;
   background-color: #5c5200;
   text-align: center;
+}
+
+.linebreak {
+  background-color: white;
+  width: 100%;
+  height: 1px;
+  margin: 5px 0;
 }
 
 .dropzone {
@@ -66,30 +73,41 @@
 }
 
 .chatList {
+  margin-left: 5px;
   overflow-y: auto;
-  height: 60vh;
+  height: 80vh;
+}
+
+.chat {
+  padding: 2px 2px;
+  margin: 2px 0;
+  display: flex;
 }
 
 .chatItem {
-  padding: 5px 2px;
-  margin: 5px 0;
-  background-color: #5c5200;
-  display: flex;
+  padding-top: 5px;
 }
 
 .chatItem:hover {
   border-radius: 15px;
   cursor: pointer;
+  background-color: #5c5200;
+}
+
+.convDate {
+  font-size: 10px;
+  font-family: Mulish-bold;
 }
 
 .logout {
   margin-bottom: 10px;
   padding: 5px;
-  width: 100%;
+  width: 80%;
   text-align: center;
   background-color: #5c5200;
   border-radius: 15px;
 }
+
 .logout:hover {
   opacity: 0.8;
 }
@@ -107,12 +125,30 @@
   .username {
     margin-top: 55px;
   }
+  .chatList {
+    height: 65vh;
+  }
   .logo {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
   }
+}
+.sideDrawer {
+  height: 100%;
+  background: white;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 40%;
+  z-index: 200;
+  box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.5);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-out;
+}
+.open {
+  transform: translateX(0);
 }
 
 .burgerIcon {

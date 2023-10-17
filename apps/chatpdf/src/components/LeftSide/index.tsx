@@ -8,12 +8,13 @@ import Image from 'next/image';
 import { AppContext } from '../../context';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Toaster } from 'react-hot-toast';
 import { useCookies } from 'react-cookie';
 import { v4 as uuidv4 } from 'uuid';
 import deleteIcon from '../../assets/icons/delete.svg';
+import { getFormattedDate } from '../../utils/getUtcTime';
 
-const LeftSide = () => {
+const LeftSide = (props?: any) => {
+  const { show } = props;
   const context = useContext(AppContext);
   const [mobile, setMobile] = useState(window.innerWidth < 768);
   const [username, setUsername] = useState(localStorage.getItem('username'));
@@ -46,12 +47,12 @@ const LeftSide = () => {
       .then((res) => {
         console.log('history', res.data);
         const sortedConversations = [...res.data].sort((a, b) => {
-          const dateA = new Date(a.createdAt);
-          const dateB = new Date(b.createdAt);
+          const dateA = new Date(a.updatedAt);
+          const dateB = new Date(b.updatedAt);
           //@ts-ignore
           return dateB - dateA;
         });
-        
+
         //@ts-ignore
         setConversations(sortedConversations);
       })
@@ -315,6 +316,9 @@ const LeftSide = () => {
             ].filter(Boolean)
           );
         setMessages(history);
+        if (mobile) {
+          handleToggleCollapse();
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -323,8 +327,14 @@ const LeftSide = () => {
   };
 
   return (
-    <div className={styles.main}>
-      <Toaster position="top-center" reverseOrder={false} />
+    <div
+      className={`${styles.main} ${
+        show
+          ? styles.sideDrawer + ' ' + styles.open
+          : mobile
+          ? styles.sideDrawer
+          : ''
+      }`}>
       <div>
         {/* <div className={styles.dropzone}>
           <Dropzone onDrop={onDrop}>
@@ -347,8 +357,9 @@ const LeftSide = () => {
         </div> */}
 
         {username && <div className={styles.username}>Hi {username}!</div>}
+        {/* {username && <div className={styles.linebreak}></div> } */}
 
-        <div className={styles.pdflist}>
+        {/* <div className={styles.pdflist}>
           {pdfList.map((pdf: any, i: number) => (
             <div
               style={{ padding: collapsed ? '10px 0' : '5px 2px' }}
@@ -366,45 +377,69 @@ const LeftSide = () => {
               )}
             </div>
           ))}
-        </div>
+        </div> */}
         <div className={styles.chatList}>
           {conversations.length > 0 && (
-            <div className={styles.chatHistoryTitle}>Previous chats</div>
+            <>
+              <div className={styles.chatHistoryTitle}>Previous chats</div>
+              <div className={styles.linebreak}></div>
+            </>
           )}
           {conversations.map((conv: any, index: number) => {
             return (
               <>
-                {/* @ts-ignore */}
-                <div
-                  className={styles.chatItem}
-                  onClick={() => convChangeHandler(conv)}>
-                  <p
-                    style={{
-                      flex:
-                        sessionStorage.getItem('conversationId') ===
-                        conv?.conversationId
-                          ? 0.9
-                          : 1,
-                    }}>
-                    {conv.query}
-                  </p>
-                  {sessionStorage.getItem('conversationId') ===
-                    conv?.conversationId && (
-                    <Image
-                      src={deleteIcon}
-                      alt="deleteIcon"
-                      width={15}
-                      height={15}
-                      onClick={deleteConversation}
-                    />
-                  )}
+                <div className={styles.chatItem} key={conv.conversationId}>
+                  <div className={styles.convDate}>
+                    {getFormattedDate(conv.updatedAt)}
+                  </div>
+                  {/* @ts-ignore */}
+                  <div
+                    className={styles.chat}
+                    onClick={() => convChangeHandler(conv)}>
+                    <Image src={messageIcon} alt="" width={20} height={20} />
+                    <p
+                      style={{
+                        flex:
+                          sessionStorage.getItem('conversationId') ===
+                          conv?.conversationId
+                            ? 0.9
+                            : 1,
+                        marginLeft: '2px',
+                      }}>
+                      {!mobile
+                        ? conv.query.split(' ').length > 4
+                          ? conv.query.split(' ').slice(0, 4).join(' ') + '...'
+                          : conv.query
+                        : conv.query.split(' ').length > 7
+                        ? conv.query.split(' ').slice(0, 7).join(' ') + '...'
+                        : conv.query}
+                    </p>
+                    {sessionStorage.getItem('conversationId') ===
+                      conv?.conversationId && (
+                      <Image
+                        src={deleteIcon}
+                        alt="deleteIcon"
+                        width={15}
+                        height={15}
+                        onClick={deleteConversation}
+                      />
+                    )}
+                  </div>
+
+                  <div className={styles.linebreak}></div>
                 </div>
               </>
             );
           })}
         </div>
       </div>
-      <div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+        }}>
         <button className={styles.logout} onClick={logoutHandler}>
           Logout
         </button>

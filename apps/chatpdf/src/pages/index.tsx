@@ -20,7 +20,7 @@ const Home: NextPage = () => {
   const t = useLocalization();
   const context = useContext(AppContext);
   const { isAuthenticated, login } = useLogin();
-  const { collapsed, isLoggedIn } = context;
+  const { isLoggedIn } = context;
   const [showLaunchPage, setShowLaunchPage] = useState(true);
 
   useEffect(() => {
@@ -53,18 +53,11 @@ const Home: NextPage = () => {
           <div
             style={{
               backgroundColor: '#b99825',
-              flex: collapsed ? '0.05' : '0.2',
+              flex: '0.2',
               color: 'white',
               transition: 'all 0.2s ease',
             }}>
             <LeftSide />
-          </div>
-          <div
-            style={{
-              backgroundColor: '#0B1F3A',
-              flex: 1,
-            }}>
-            <MiddleSide />
           </div>
           <div
             style={{
@@ -78,10 +71,17 @@ const Home: NextPage = () => {
                 position: 'fixed',
                 top: '90px',
                 bottom: '1vh',
-                width: '36vw',
+                width: '36.5vw',
               }}>
               <ChatUiWindow />
             </div>
+          </div>
+          <div
+            style={{
+              backgroundColor: '#0B1F3A',
+              flex: 1,
+            }}>
+            <MiddleSide />
           </div>
         </div>
 
@@ -90,12 +90,14 @@ const Home: NextPage = () => {
           @media (max-width: 767px) {
             #chatUI {
               width: 100% !important;
+              display: block;
             }
             div {
               display: none;
             }
-            div:last-child {
+            div:nth-last-child(2) {
               display: block;
+              height: 100vh;
             }
           }
         `}</style>
