@@ -19,7 +19,9 @@ const MiddleSide = () => {
   const context = useContext(AppContext);
   const { selectedPdf, uploadingPdf, uploadProgress, processingPdf, keyword } =
     context;
-  const newPlugin = defaultLayoutPlugin();
+  const newPlugin = defaultLayoutPlugin({sidebarTabs(defaultTabs) {
+    return []
+  },});
   const pageNavigationPluginInstance = pageNavigationPlugin();
   console.log("hie", selectedPdf);
 
@@ -94,7 +96,7 @@ const MiddleSide = () => {
             }}
           >
             <Viewer
-              // defaultScale={SpecialZoomLevel.PageFit}
+              defaultScale={SpecialZoomLevel.PageWidth}
               plugins={[newPlugin, searchPluginInstance, pageNavigationPluginInstance]}
               fileUrl={selectedPdf.preview}
               initialPage={0}

@@ -170,6 +170,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   }, []);
 
   const textHighlighter = (content: any, id: any) => {
+    console.log("here", content, id)
     if (!id) return;
     let desiredItem = null;
     if (content?.data?.highlightText) {

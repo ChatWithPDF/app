@@ -61,7 +61,7 @@ const Home: NextPage = () => {
           </div>
           <div
             style={{
-              flex: 0.7,
+              flex: 1,
               height: '100vh',
             }}>
             <NavBar />
@@ -71,7 +71,7 @@ const Home: NextPage = () => {
                 position: 'fixed',
                 top: '90px',
                 bottom: '1vh',
-                width: '36.5vw',
+                width: '45vw',
               }}>
               <ChatUiWindow />
             </div>
