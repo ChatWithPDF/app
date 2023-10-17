@@ -93,9 +93,12 @@ const ContextProvider: FC<{
           ...media,
         };
 
+        console.log("here", msg, conversationId)
         //@ts-ignore
-        if (conversationId === msg?.content?.conversationId)
-          setMessages((prev: any) => _.uniq([...prev, newMsg], ['messageId']));
+        if (conversationId === msg?.content?.conversationId){
+          console.log("here", newMsg)
+          setMessages((prev: any) => [...prev, newMsg]);
+        }
       }
     },
     [conversationId]
@@ -176,6 +179,7 @@ const ContextProvider: FC<{
         } else {
         }
       } else {
+        const msgId = uuidv4();
         //console.log('mssgs:',messages)
         //@ts-ignore
         setMessages((prev: any) => [
@@ -188,7 +192,7 @@ const ContextProvider: FC<{
             payload: { text },
             time: Date.now(),
             disabled: true,
-            messageId: uuidv4(),
+            messageId: msgId,
             repliedTimestamp: Date.now(),
           },
         ]);
@@ -196,7 +200,7 @@ const ContextProvider: FC<{
         const data = {
           body: text,
           userId: localStorage.getItem('userID'),
-          messageId: uuidv4(),
+          messageId: msgId,
           conversationId: sessionStorage.getItem('conversationId'),
           mobileNumber: localStorage.getItem('phoneNumber'),
           // pdfId: selectedPdf?.id,
@@ -235,7 +239,7 @@ const ContextProvider: FC<{
               conversationId: sessionStorage.getItem('conversationId'),
               highlightText: null,
             },
-            messageId: uuidv4(),
+            messageId: msgId,
           });
           setIsMsgReceiving(false);
           setLoading(false);

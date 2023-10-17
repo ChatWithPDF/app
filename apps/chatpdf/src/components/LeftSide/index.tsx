@@ -45,7 +45,15 @@ const LeftSide = () => {
       })
       .then((res) => {
         console.log('history', res.data);
-        setConversations(res.data);
+        const sortedConversations = [...res.data].sort((a, b) => {
+          const dateA = new Date(a.createdAt);
+          const dateB = new Date(b.createdAt);
+          //@ts-ignore
+          return dateB - dateA;
+        });
+        
+        //@ts-ignore
+        setConversations(sortedConversations);
       })
       .catch((err) => {
         console.log(err);
@@ -257,6 +265,7 @@ const LeftSide = () => {
         getConversations();
         const newConversationId = uuidv4();
         sessionStorage.setItem('conversationId', newConversationId);
+        context?.setConversationId(newConversationId);
         setMessages([]);
       })
       .catch((err) => {
@@ -293,7 +302,7 @@ const LeftSide = () => {
                 text: item.query,
                 position: 'right',
                 repliedTimestamp: item.createdAt,
-                messageId: uuidv4(),
+                messageId: item.id,
               },
               {
                 text: item.response,

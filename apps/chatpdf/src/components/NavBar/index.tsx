@@ -40,7 +40,9 @@ function NavBar() {
 
   const newChatHandler = () => {
     context?.setMessages([]);
-    sessionStorage.setItem('conversationId', uuidv4());
+    const newConversationId = uuidv4();
+    sessionStorage.setItem('conversationId', newConversationId);
+    context?.setConversationId(newConversationId);
     toast.success('New chat started!');
   };
 
