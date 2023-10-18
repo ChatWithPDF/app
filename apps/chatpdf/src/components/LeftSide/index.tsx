@@ -265,8 +265,6 @@ const LeftSide = (props?: any) => {
       .then((res) => {
         getConversations();
         const newConversationId = uuidv4();
-    console.log("yoyo")
-
         sessionStorage.setItem('conversationId', newConversationId);
         context?.setConversationId(newConversationId);
         setMessages([]);
@@ -278,9 +276,8 @@ const LeftSide = (props?: any) => {
   };
 
   const convChangeHandler = (conv: any) => {
-    console.log("yoyo", conv)
-
     sessionStorage.setItem('conversationId', conv?.conversationId);
+    context?.setConversationId(conv?.conversationId);
     axios
       .get(
         `${
@@ -332,15 +329,14 @@ const LeftSide = (props?: any) => {
   };
 
   useEffect(() => {
-    if(!sessionStorage.getItem('conversationId')){
+    if (!sessionStorage.getItem('conversationId')) {
       convChangeHandler({
         conversationId: uuidv4(),
       });
-    }else{
+    } else {
       convChangeHandler({
         conversationId: sessionStorage.getItem('conversationId'),
       });
-
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

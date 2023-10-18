@@ -42,8 +42,6 @@ function NavBar() {
   const newChatHandler = () => {
     context?.setMessages([]);
     const newConversationId = uuidv4();
-    console.log("yoyo")
-
     sessionStorage.setItem('conversationId', newConversationId);
     context?.setConversationId(newConversationId);
     toast.success('New chat started!');
