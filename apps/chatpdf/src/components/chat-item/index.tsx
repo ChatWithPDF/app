@@ -22,6 +22,7 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
   const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
 
   const handleChatPage = useCallback(() => {
+    console.log("yoyo")
     sessionStorage.setItem('conversationId', conversationId || 'null');
     context?.setConversationId(conversationId);
     router.push('/chat');
@@ -43,6 +44,7 @@ const ChatItem: React.FC<ChatItemPropsType> = ({
           console.log('deleting conversation');
           if (conversationId === sessionStorage.getItem('conversationId')) {
             const newConversationId = uuidv4();
+    console.log("yoyo")
             sessionStorage.setItem('conversationId', newConversationId);
             context?.setConversationId(newConversationId);
             context?.setMessages([]);

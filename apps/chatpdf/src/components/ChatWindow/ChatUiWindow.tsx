@@ -72,6 +72,8 @@ const ChatUiWindow: React.FC = () => {
   useEffect(() => {
     if (!sessionStorage.getItem('conversationId')) {
       const newConversationId = uuidv4();
+    console.log("yoyo")
+
       sessionStorage.setItem('conversationId', newConversationId);
       context?.setConversationId(newConversationId);
     }
