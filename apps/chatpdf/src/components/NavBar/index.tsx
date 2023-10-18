@@ -4,6 +4,7 @@ import { AppContext } from '../../context';
 import { useLocalization } from '../../hooks';
 import { Select, MenuItem } from '@material-ui/core';
 import HamburgerIcon from '../../assets/icons/burger-menu';
+import crossIcon from '../../assets/icons/crossIcon.svg';
 import Image from 'next/image';
 import LeftSide from '../LeftSide';
 import { v4 as uuidv4 } from 'uuid';
@@ -52,7 +53,11 @@ function NavBar() {
         <LeftSide show={context?.collapsed} />
       </div>
       <div className={styles.hamburgerIcon} onClick={toggleMobileMenu}>
-        <HamburgerIcon color={context?.collapsed ? 'white' : 'black'} />
+        {context?.collapsed ? (
+          <Image src={crossIcon} alt="" height={25} width={25} />
+        ) : (
+          <HamburgerIcon color="#b99825" />
+        )}
       </div>
       <div className={styles.navbarHeading}>{t('label.title')}</div>
       <div className={styles.newChatContainer} onClick={newChatHandler}>
