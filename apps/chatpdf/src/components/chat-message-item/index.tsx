@@ -166,28 +166,35 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
         );
       });
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [context?.messages]);
 
   const textHighlighter = (content: any, id: any) => {
-    console.log("here", content, id)
+    console.log('here', content, id);
     if (!id) return;
     let desiredItem = null;
     if (content?.data?.highlightText) {
       for (const item of content.data.highlightText) {
-        console.log('okie', item.id, id, item.content);
-        if (item.id == id) {
+        console.log('okie', item.documentId, id, item.content);
+        if (item.documentId == id) {
           console.log('okie here');
           desiredItem = item;
           break;
         }
       }
       console.log('okie', desiredItem);
-      if(content?.data?.position === 'left' && content?.data?.highlightText){
-        if(context?.keyword && context?.keyword?.id !== desiredItem?.id){
-          context?.setKeyword(desiredItem);
-        }else if(!context?.keyword){
-          context?.setKeyword(desiredItem);
+      if (!desiredItem) {
+        context?.setKeyword(content?.data?.highlightText?.[0]);
+      } else {
+        if (
+          content?.data?.position === 'left' &&
+          content?.data?.highlightText
+        ) {
+          if (context?.keyword && context?.keyword?.id !== desiredItem?.id) {
+            context?.setKeyword(desiredItem);
+          } else if (!context?.keyword) {
+            context?.setKeyword(desiredItem);
+          }
         }
       }
     }

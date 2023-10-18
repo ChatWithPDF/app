@@ -312,6 +312,7 @@ const LeftSide = (props?: any) => {
                 reaction: item.reaction,
                 msgId: item.id,
                 messageId: item.id,
+                highlightText: item.context,
               },
             ].filter(Boolean)
           );
@@ -325,6 +326,13 @@ const LeftSide = (props?: any) => {
         toast.error('Failed to load chat!');
       });
   };
+
+  useEffect(() => {
+    convChangeHandler({
+      conversationId: sessionStorage.getItem('conversationId'),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div
@@ -388,14 +396,15 @@ const LeftSide = (props?: any) => {
           {conversations.map((conv: any, index: number) => {
             return (
               <>
-                <div className={styles.chatItem} key={conv.conversationId}>
+                <div
+                  className={styles.chatItem}
+                  key={conv.conversationId}
+                  onClick={() => convChangeHandler(conv)}>
                   <div className={styles.convDate}>
                     {getFormattedDate(conv.updatedAt)}
                   </div>
                   {/* @ts-ignore */}
-                  <div
-                    className={styles.chat}
-                    onClick={() => convChangeHandler(conv)}>
+                  <div className={styles.chat}>
                     <Image src={messageIcon} alt="" width={20} height={20} />
                     <p
                       style={{
