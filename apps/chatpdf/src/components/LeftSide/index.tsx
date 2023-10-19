@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Dropzone from 'react-dropzone';
 import styles from './index.module.css';
 import messageIcon from '../../assets/icons/message.svg';
@@ -8,8 +8,10 @@ import { AppContext } from '../../context';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const LeftSide = () => {
+const LeftSide = (props?: any) => {
+  const { show } = props;
   const context = useContext(AppContext);
+  const [mobile, setMobile] = useState(window.innerWidth < 768);
   const {
     pdfList,
     setPdfList,
@@ -22,6 +24,19 @@ const LeftSide = () => {
     collapsed,
     setCollapsed,
   } = context;
+
+  useEffect(() => {
+    window.addEventListener('resize', handleWindowSizeChange);
+    return () => {
+      window.removeEventListener('resize', handleWindowSizeChange);
+    };
+  }, []);
+
+  const handleWindowSizeChange = () => {
+    if (window.innerWidth < 768) {
+      setMobile(true);
+    } else setMobile(false);
+  };
 
   const handleToggleCollapse = () => {
     setCollapsed((prevCollapsed: any) => !prevCollapsed);
@@ -127,7 +142,14 @@ const LeftSide = () => {
   };
 
   return (
-    <div className={styles.main}>
+    <div
+      className={`${styles.main} ${
+        show
+          ? styles.sideDrawer + ' ' + styles.open
+          : mobile
+          ? styles.sideDrawer
+          : ''
+      }`}>
       <div>
         <div className={styles.dropzone}>
           <Dropzone onDrop={onDrop}>
@@ -135,7 +157,7 @@ const LeftSide = () => {
               <section>
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
-                  {!collapsed ? (
+                  {!collapsed && !mobile ? (
                     <>
                       <p>+ New Chat</p>
                       <span>Drop PDF here</span>

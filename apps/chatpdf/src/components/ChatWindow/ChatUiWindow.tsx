@@ -143,7 +143,6 @@ const ChatUiWindow: React.FC = () => {
 
   return (
     <>
-      <NavBar/>
       <div style={{ height: '100%', width: '100%' }}>
         <Chat
           btnColor="var(--secondary)"
