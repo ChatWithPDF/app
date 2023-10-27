@@ -90,7 +90,9 @@ const Home: NextPage = () => {
           @media (max-width: 767px) {
             #chatUI {
               width: 100% !important;
-              height: 87dvh;
+              height: calc(100dvh - 90px);
+              height: calc(100dvh - 90px);
+              height: calc(100dvh - 90px);
               display: block !important;
               position: static !important;
               top: auto !important;
@@ -102,14 +104,6 @@ const Home: NextPage = () => {
             div:nth-last-child(2) {
               display: block;
               height: 100vh;
-            }
-          }
-          @media screen and (-webkit-min-device-pixel-ratio: 0) {
-            #chatUI {
-              position: fixed !important;
-              top: 90px !important;
-              bottom: 1vh !important;
-              height: auto;
             }
           }
         `}</style>
