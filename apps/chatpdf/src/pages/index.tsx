@@ -62,7 +62,7 @@ const Home: NextPage = () => {
           <div
             style={{
               flex: 1,
-              height: '100dvh',
+              height: '100vh',
             }}>
             <div
               id="chatUI"
