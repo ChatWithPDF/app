@@ -12,6 +12,7 @@ import { useCookies } from 'react-cookie';
 import { v4 as uuidv4 } from 'uuid';
 import deleteIcon from '../../assets/icons/delete.svg';
 import { getFormattedDate } from '../../utils/getUtcTime';
+import { Spinner } from '@chakra-ui/react';
 
 const LeftSide = (props?: any) => {
   const { show } = props;
@@ -393,12 +394,19 @@ const LeftSide = (props?: any) => {
             </div>
           ))}
         </div> */}
-        <div className={styles.chatList}>
-          {conversations.length > 0 && (
+        <div
+          className={styles.chatList}
+          style={{ marginTop: !username ? '55px' : '0px' }}>
+          {conversations.length > 0 ? (
             <>
               <div className={styles.chatHistoryTitle}>Previous chats</div>
               <div className={styles.linebreak}></div>
             </>
+          ) : (
+            <div style={{ textAlign: 'center', marginTop: '50px' }}>
+              {/* @ts-ignore */}
+              <Spinner />
+            </div>
           )}
           {conversations.map((conv: any, index: number) => {
             return (

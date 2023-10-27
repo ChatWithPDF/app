@@ -64,16 +64,25 @@ const Home: NextPage = () => {
               flex: 1,
               height: '100dvh',
             }}>
-            <NavBar />
             <div
               id="chatUI"
               style={{
+                visibility: context?.showPdf ? 'hidden' : 'visible',
                 position: 'fixed',
-                top: '90px',
-                bottom: '1vh',
+                top: '0',
+                bottom: '0',
                 width: '45vw',
               }}>
+              <NavBar />
               <ChatUiWindow />
+            </div>
+            <div
+              style={{
+                display: 'block',
+                visibility: context?.showPdf ? 'visible' : 'hidden',
+                height: '100%'
+              }}>
+              <MiddleSide />
             </div>
           </div>
           <div
@@ -90,11 +99,6 @@ const Home: NextPage = () => {
           @media (max-width: 767px) {
             #chatUI {
               width: 100% !important;
-              height: calc(100dvh - 90px);
-              display: block !important;
-              position: static !important;
-              top: auto !important;
-              bottom: auto !important;
             }
             div {
               display: none;

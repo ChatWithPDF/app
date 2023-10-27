@@ -59,6 +59,7 @@ const ContextProvider: FC<{
   const [currentPdfId, setCurrentPdfId] = useState('');
   const [keyword, setKeyword] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState(cookie['access_token'] && localStorage.getItem('userID'));
+  const [showPdf, setShowPdf] = useState(false);
 
   console.log(messages);
 
@@ -333,7 +334,9 @@ const ContextProvider: FC<{
       keyword,
       setKeyword,
       isLoggedIn,
-      setIsLoggedIn
+      setIsLoggedIn,
+      showPdf,
+      setShowPdf
     }),
     [
       locale,
@@ -375,7 +378,9 @@ const ContextProvider: FC<{
       keyword,
       setKeyword,
       isLoggedIn,
-      setIsLoggedIn
+      setIsLoggedIn,
+      showPdf,
+      setShowPdf
     ]
   );
 
