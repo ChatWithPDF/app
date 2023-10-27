@@ -91,8 +91,6 @@ const Home: NextPage = () => {
             #chatUI {
               width: 100% !important;
               height: calc(100dvh - 90px);
-              height: calc(100dvh - 90px);
-              height: calc(100dvh - 90px);
               display: block !important;
               position: static !important;
               top: auto !important;
