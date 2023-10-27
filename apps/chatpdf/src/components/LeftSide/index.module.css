@@ -201,7 +201,7 @@
   }
 }
 
-@media only screen and (max-height: 530px){
+@media only screen and (max-height: 555px){
   .chatList{
     height: 48vh;
   }

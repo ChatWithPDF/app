@@ -24,6 +24,20 @@ import { isAndroid, isWindows, isMacOs, isIOS } from 'react-device-detect';
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
   const context = useContext(AppContext);
+  const [divHeight, setDivHeight] = useState<any>('88%');
+
+  const updateDivHeight = () => {
+    const newHeight = window.innerWidth < 768 ? window.innerHeight - 80 : '88%';
+    setDivHeight(newHeight);
+  };
+
+  useEffect(() => {
+    updateDivHeight();
+    window.addEventListener('resize', updateDivHeight);
+    return () => {
+      window.removeEventListener('resize', updateDivHeight);
+    };
+  }, []);
 
   useEffect(() => {
     // should be logged in, should have phone number, should not trigger again in one session and should have username
@@ -86,47 +100,9 @@ const ChatUiWindow: React.FC = () => {
         return;
       }
       console.log('mssgs:', context?.messages);
-      // try {
-      // if (!(localStorage.getItem("locale") === "en")) {
-      //   const words = msg.split(" ");
-      //   // Call transliteration API
-      //   const input = words.map((word: string) => ({
-      //     source: word,
-      //   }));
-
-      //   const response = await axios.post(
-      //     "https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/compute",
-      //     {
-      //       modelId: process.env.NEXT_PUBLIC_TRANSLITERATION_MODELID,
-      //       task: "transliteration",
-      //       input: input,
-      //     },
-      //     {
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //     }
-      //   );
-      //   console.log("transliterated msg: ", response.data.output);
-      //   const transliteratedArray = [];
-      //   for (const element of response.data.output) {
-      //     transliteratedArray.push(element?.target?.[0]);
-      //   }
-
-      //   if (context?.socketSession && context?.newSocket?.connected) {
-      //     context?.sendMessage(transliteratedArray.join(" "));
-      //   } else {
-      //     toast.error(t("error.disconnected"));
-      //     return;
-      //   }
-      // } else {
       if (type === 'text' && msg.trim()) {
         context?.sendMessage(msg.trim());
       }
-      // }
-      // } catch (error) {
-      //   console.error(error);
-      // }
     },
     [context, t]
   );
@@ -160,7 +136,7 @@ const ChatUiWindow: React.FC = () => {
 
   return (
     <>
-      <div style={{ height: window.innerWidth < 768 ? window.innerHeight - 80 : '88%', width: '100%' }}>
+      <div style={{ height: divHeight, width: '100%' }}>
         <Chat
           quickReplies={[{name:"When is the next holiday?"}, {name:"How can I create a good one-pager?"}, {name:"What is a Samagra case study?"}, {name: "I've used 11 leaves this year; how many can I carry over?"}]}
           onQuickReplyClick={(e: any) => handleSend('text', e.name)}
