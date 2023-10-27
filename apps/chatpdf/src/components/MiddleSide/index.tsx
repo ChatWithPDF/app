@@ -97,7 +97,7 @@ const MiddleSide = () => {
         ) : selectedPdf && selectedPdf.preview ? (
           <div
             style={{
-              height: context?.showPdf ? '85vh': '95vh',
+              height: context?.showPdf ? '75vh': '95vh',
               boxShadow:
                 '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 23px -6px rgb(0 0 0 / 0.1)',
               padding: '10px',
