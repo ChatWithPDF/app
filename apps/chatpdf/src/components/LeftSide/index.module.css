@@ -100,6 +100,7 @@
 }
 
 .logout {
+  margin-top: 5px;
   margin-bottom: 10px;
   padding: 5px;
   width: 80%;
@@ -121,20 +122,6 @@
   padding: 1vh;
 }
 
-@media only screen and (max-width: 600px) {
-  .username {
-    margin-top: 55px;
-  }
-  .chatList {
-    height: 65vh;
-  }
-  .logo {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
-}
 .sideDrawer {
   height: 100%;
   background: white;
@@ -149,15 +136,6 @@
 }
 .open {
   transform: translateX(0);
-}
-
-.burgerIcon {
-  width: 100%;
-  text-align: center;
-}
-
-.burgerIcon img {
-  cursor: pointer;
 }
 
 .mobileView {
@@ -186,9 +164,6 @@
   .dropzone p {
     font-size: 3rem;
   }
-  .burgerIcon {
-    display: none;
-  }
   .mobileView {
     display: block;
   }
@@ -197,5 +172,22 @@
   }
   .imageContainer {
     width: 20% !important;
+  }
+  .username {
+    margin-top: 55px;
+  }
+  .chatList {
+    height: 55vh;
+  }
+  .logout{
+    position: absolute;
+    bottom: 120px;
+    margin: auto;
+  }
+  .logo {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 }

@@ -170,6 +170,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   }, [context?.messages]);
 
   const textHighlighter = (content: any, id: any) => {
+    context?.setShowPdf(true);
     console.log('here', content, id);
     if (!id) return;
     let desiredItem = null;

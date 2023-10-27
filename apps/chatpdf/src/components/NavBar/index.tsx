@@ -9,12 +9,28 @@ import Image from 'next/image';
 import LeftSide from '../LeftSide';
 import { v4 as uuidv4 } from 'uuid';
 import plusIcon from '../../assets/icons/plus.svg';
+import pdfIcon from '../../assets/icons/pdfIcon.svg'
 import toast from 'react-hot-toast';
 
 function NavBar() {
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const context = useContext(AppContext);
   const t = useLocalization();
+  const [mobile, setMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    window.addEventListener('resize', handleWindowSizeChange);
+    return () => {
+      window.removeEventListener('resize', handleWindowSizeChange);
+    };
+  }, []);
+
+  const handleWindowSizeChange = () => {
+    if (window.innerWidth < 768) {
+      setMobile(true);
+    } else setMobile(false);
+  };
+
 
   useEffect(() => {
     const storedLanguage = localStorage.getItem('locale');
@@ -47,6 +63,10 @@ function NavBar() {
     toast.success('New chat started!');
   };
 
+  const showPdfHandler = () => {
+    context?.setShowPdf((prev: boolean) => !prev);
+  }
+
   return (
     <div className={styles.navbar}>
       <div className={styles.mobileView}>
@@ -60,6 +80,9 @@ function NavBar() {
         )}
       </div>
       <div className={styles.navbarHeading}>{t('label.title')}</div>
+      {mobile && <div className={styles.newChatContainer} onClick={showPdfHandler}>
+        <Image src={pdfIcon} alt="" width={20} height={20} />
+      </div>}
       <div className={styles.newChatContainer} onClick={newChatHandler}>
         <Image src={plusIcon} alt="" width={20} height={20} />
       </div>
