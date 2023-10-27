@@ -104,6 +104,11 @@ const Home: NextPage = () => {
               height: 100vh;
             }
           }
+          @media screen and (-webkit-min-device-pixel-ratio: 0) {
+            #chatUI {
+              height: 95dvh;
+            }
+          }
         `}</style>
       </>
     );
