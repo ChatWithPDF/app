@@ -10,6 +10,7 @@ import NavBar from '../components/NavBar';
 import LaunchPage from '../components/LaunchPage';
 import LoginPage from '../components/LoginPage';
 import { useLogin } from '../hooks';
+import Div100vh from 'react-div-100vh';
 
 const ChatUiWindow = dynamic(
   () => import('../components/ChatWindow/ChatUiWindow'),
@@ -44,7 +45,7 @@ const Home: NextPage = () => {
         <Head>
           <title> {t('label.title')}</title>
         </Head>
-        <div
+        <Div100vh
           style={{
             width: '100vw',
             height: '100vh',
@@ -59,7 +60,7 @@ const Home: NextPage = () => {
             }}>
             <LeftSide />
           </div>
-          <div
+          <Div100vh
             style={{
               flex: 1,
               height: '100vh',
@@ -75,7 +76,7 @@ const Home: NextPage = () => {
               }}>
               <ChatUiWindow />
             </div>
-          </div>
+          </Div100vh>
           <div
             style={{
               backgroundColor: '#0B1F3A',
@@ -83,7 +84,7 @@ const Home: NextPage = () => {
             }}>
             <MiddleSide />
           </div>
-        </div>
+        </Div100vh>
 
         {/* Mobile View */}
         <style jsx>{`

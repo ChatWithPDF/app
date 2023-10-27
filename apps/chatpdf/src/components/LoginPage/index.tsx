@@ -124,7 +124,7 @@ const LoginPage = () => {
             src={logo}
             alt="Samagra logo"
             height={55}
-            width={180}
+            width={220}
             priority
           />
         </div>
