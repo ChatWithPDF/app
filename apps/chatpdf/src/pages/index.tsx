@@ -33,7 +33,6 @@ const Home: NextPage = () => {
     setTimeout(() => {
       setShowLaunchPage(!showLaunchPage);
     }, 2200);
-    console.log("hurray", window.innerHeight)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -71,7 +70,7 @@ const Home: NextPage = () => {
               style={{
                 position: 'fixed',
                 top: '90px',
-                bottom: 'calc(100vh - window.innerHeight)',
+                bottom: '1vh',
                 width: '45vw',
               }}>
               <ChatUiWindow />
@@ -91,7 +90,10 @@ const Home: NextPage = () => {
           @media (max-width: 767px) {
             #chatUI {
               width: 100% !important;
-              display: block;
+              display: block !important;
+              position: static !important;
+              top: auto !important;
+              bottom: auto !important;
             }
             div {
               display: none;
