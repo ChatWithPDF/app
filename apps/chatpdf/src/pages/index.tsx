@@ -82,6 +82,7 @@ const Home: NextPage = () => {
                 visibility: context?.showPdf ? 'visible' : 'hidden',
                 height: '100%'
               }}>
+                <NavBar />
               <MiddleSide />
             </div>
           </div>
