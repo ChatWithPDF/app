@@ -19,6 +19,7 @@ import RenderVoiceRecorder from '../recorder/RenderVoiceRecorder';
 import NavBar from '../NavBar';
 import { logEvent, setUserProperties } from 'firebase/analytics';
 import { analytics } from '../../utils/firebase';
+import { isAndroid, isWindows, isMacOs, isIOS } from 'react-device-detect';
 
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
@@ -159,7 +160,7 @@ const ChatUiWindow: React.FC = () => {
 
   return (
     <>
-      <div style={{ height: '75%', width: '100%' }}>
+      <div style={{ height: (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/Windows/i) || navigator.userAgent.match(/Mac OS X/i)) ? '90%' : '75%', width: '100%' }}>
         <Chat
           quickReplies={[{name:"When is the next holiday?"}, {name:"How can I create a good one-pager?"}, {name:"What is a Samagra case study?"}, {name: "I've used 11 leaves this year; how many can I carry over?"}]}
           onQuickReplyClick={(e: any) => handleSend('text', e.name)}

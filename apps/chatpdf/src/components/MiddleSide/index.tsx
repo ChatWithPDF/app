@@ -14,6 +14,7 @@ import { searchPlugin } from 'custom-pdf-search';
 import { pageNavigationPlugin } from '@react-pdf-viewer/page-navigation';
 import '@react-pdf-viewer/page-navigation/lib/styles/index.css';
 import { Spinner } from '@chakra-ui/react';
+import { isAndroid, isWindows, isMacOs } from 'react-device-detect';
 
 const MiddleSide = () => {
   const context = useContext(AppContext);
@@ -97,7 +98,7 @@ const MiddleSide = () => {
         ) : selectedPdf && selectedPdf.preview ? (
           <div
             style={{
-              height: context?.showPdf ? '75vh': '95vh',
+              height: context?.showPdf ? navigator.userAgent.match(/Android/i) ? '85vh' : '75vh' : '95vh',
               boxShadow:
                 '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 23px -6px rgb(0 0 0 / 0.1)',
               padding: '10px',
