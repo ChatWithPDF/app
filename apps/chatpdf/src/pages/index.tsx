@@ -80,6 +80,9 @@ const Home: NextPage = () => {
               style={{
                 display: 'block',
                 visibility: context?.showPdf ? 'visible' : 'hidden',
+                position: 'fixed',
+                top: '0',
+                bottom: '0',
                 height: '100%'
               }}>
                 <NavBar />

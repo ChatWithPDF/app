@@ -160,7 +160,7 @@ const ChatUiWindow: React.FC = () => {
 
   return (
     <>
-      <div style={{ height: window.innerHeight - 80, width: '100%' }}>
+      <div style={{ height: window.innerWidth < 768 ? window.innerHeight - 80 : '88%', width: '100%' }}>
         <Chat
           quickReplies={[{name:"When is the next holiday?"}, {name:"How can I create a good one-pager?"}, {name:"What is a Samagra case study?"}, {name: "I've used 11 leaves this year; how many can I carry over?"}]}
           onQuickReplyClick={(e: any) => handleSend('text', e.name)}

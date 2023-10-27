@@ -127,7 +127,7 @@
     margin-top: 55px;
   }
   .chatList {
-    height: 65vh;
+    height: 60vh;
   }
   .logo {
     position: absolute;
@@ -198,5 +198,11 @@
   }
   .imageContainer {
     width: 20% !important;
+  }
+}
+
+@media only screen and (max-height: 530px){
+  .chatList{
+    height: 48vh;
   }
 }
