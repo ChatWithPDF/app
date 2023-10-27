@@ -10,7 +10,6 @@ import NavBar from '../components/NavBar';
 import LaunchPage from '../components/LaunchPage';
 import LoginPage from '../components/LoginPage';
 import { useLogin } from '../hooks';
-import Div100vh from 'react-div-100vh';
 
 const ChatUiWindow = dynamic(
   () => import('../components/ChatWindow/ChatUiWindow'),
@@ -34,6 +33,7 @@ const Home: NextPage = () => {
     setTimeout(() => {
       setShowLaunchPage(!showLaunchPage);
     }, 2200);
+    console.log("hurray", window.innerHeight)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -45,7 +45,7 @@ const Home: NextPage = () => {
         <Head>
           <title> {t('label.title')}</title>
         </Head>
-        <Div100vh
+        <div
           style={{
             width: '100vw',
             height: '100vh',
@@ -60,7 +60,7 @@ const Home: NextPage = () => {
             }}>
             <LeftSide />
           </div>
-          <Div100vh
+          <div
             style={{
               flex: 1,
               height: '100vh',
@@ -71,12 +71,12 @@ const Home: NextPage = () => {
               style={{
                 position: 'fixed',
                 top: '90px',
-                bottom: '1vh',
+                bottom: 'calc(100vh - window.innerHeight)',
                 width: '45vw',
               }}>
               <ChatUiWindow />
             </div>
-          </Div100vh>
+          </div>
           <div
             style={{
               backgroundColor: '#0B1F3A',
@@ -84,7 +84,7 @@ const Home: NextPage = () => {
             }}>
             <MiddleSide />
           </div>
-        </Div100vh>
+        </div>
 
         {/* Mobile View */}
         <style jsx>{`
