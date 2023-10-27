@@ -62,7 +62,7 @@ const Home: NextPage = () => {
           <div
             style={{
               flex: 1,
-              height: '100vh',
+              height: '100dvh',
             }}>
             <NavBar />
             <div
@@ -90,6 +90,7 @@ const Home: NextPage = () => {
           @media (max-width: 767px) {
             #chatUI {
               width: 100% !important;
+              height: 88%;
               display: block !important;
               position: static !important;
               top: auto !important;
