@@ -14,7 +14,6 @@ import { searchPlugin } from 'custom-pdf-search';
 import { pageNavigationPlugin } from '@react-pdf-viewer/page-navigation';
 import '@react-pdf-viewer/page-navigation/lib/styles/index.css';
 import { Spinner } from '@chakra-ui/react';
-import { isAndroid, isWindows, isMacOs } from 'react-device-detect';
 
 const MiddleSide = () => {
   const context = useContext(AppContext);

@@ -467,11 +467,11 @@ const LeftSide = (props?: any) => {
         <button className={styles.logout} onClick={logoutHandler}>
           Logout
         </button>
-        {mobile && (
+        {/* {mobile && (
           <div className={styles.burgerIcon} onClick={handleToggleCollapse}>
             <BurgerIcon color="white" />
           </div>
-        )}
+        )} */}
         <div className={styles.logo}>
           <Image src={logo} alt="Samagra logo" layout="responsive" />
         </div>

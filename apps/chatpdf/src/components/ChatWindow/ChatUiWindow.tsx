@@ -19,7 +19,6 @@ import RenderVoiceRecorder from '../recorder/RenderVoiceRecorder';
 import NavBar from '../NavBar';
 import { logEvent, setUserProperties } from 'firebase/analytics';
 import { analytics } from '../../utils/firebase';
-import { isAndroid, isWindows, isMacOs, isIOS } from 'react-device-detect';
 
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
