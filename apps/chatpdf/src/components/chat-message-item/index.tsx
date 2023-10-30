@@ -202,14 +202,13 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   };
 
   const isUrl = (word: any) => {
-    const urlPattern =
-      /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/gm;
+    const urlPattern = /(https?:\/\/[^\s]+)/;
     return word.match(urlPattern);
   };
 
   const addMarkup = (word: any) => {
     return isUrl(word)
-      ? `<a href="${word}" style="text-decoration: underline">${word}</a>`
+      ? `<a href="${word}" style="text-decoration: underline; color: #0000ffb7">${word}</a>`
       : word.replace(
           /\[(\d+)\]/g,
           // @ts-ignore
@@ -219,8 +218,9 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   };
 
   const { content, type } = message;
+  const sanitizedText = content?.text.replace(/\n/g, '\n ');
 
-  const formattedContent = content?.text
+  const formattedContent = sanitizedText
     .split(' ')
     .map((word: any, index: number) => addMarkup(word))
     .join(' ');
