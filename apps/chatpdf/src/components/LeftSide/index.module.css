@@ -8,7 +8,6 @@
 
 .username {
   margin: 5px;
-  background-color: #5c5200;
   text-align: center;
 }
 
@@ -51,6 +50,10 @@
   font-size: 12px;
   font-family: Mulish-bold;
   color: white;
+  background-color: #5c5200;
+  border-radius: 15px;
+  padding: 5px;
+  margin-bottom: 2px;
 }
 
 .noHistory{
@@ -152,17 +155,22 @@
     width: 20% !important;
   }
   .username {
-    margin-top: 55px;
+    margin-top: 32px;
   }
   .chatList {
     height: 55vh;
   }
+  .chatItem:hover{
+    background-color: transparent;
+  }
   .logout{
     position: absolute;
-    bottom: 120px;
+    bottom: 90px;
     margin: auto;
   }
   .logo {
+    background: #fff;
+    padding: 10px 40px;
     position: absolute;
     bottom: 0;
     left: 0;

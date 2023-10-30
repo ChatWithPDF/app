@@ -18,7 +18,6 @@ const LeftSide = (props?: any) => {
   const context = useContext(AppContext);
   const [mobile, setMobile] = useState(window.innerWidth < 768);
   const [username, setUsername] = useState(localStorage.getItem('username'));
-  const [spinner, setSpinner] = useState(true);
   const {
     pdfList,
     setPdfList,
@@ -117,14 +116,12 @@ const LeftSide = (props?: any) => {
     ])
       .then(() => {
         setPdfList(pdfListTemp);
-        setSpinner(false);
         setSelectedPdf(pdfListTemp[0]);
         setCurrentPdfId(pdfListTemp[0].id);
       })
       .catch((error) => {
         toast.error('Error fetching PDFs');
         console.error('Error fetching PDFs:', error);
-        setSpinner(false);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -251,7 +248,7 @@ const LeftSide = (props?: any) => {
     context?.setIsLoggedIn(false);
   };
 
-  const deleteConversation = () => {
+  const deleteConversation = (convId: any) => {
     const conversationId = sessionStorage.getItem('conversationId');
     axios
       .get(
@@ -264,10 +261,13 @@ const LeftSide = (props?: any) => {
       )
       .then((res) => {
         getConversations();
-        const newConversationId = uuidv4();
-        sessionStorage.setItem('conversationId', newConversationId);
-        context?.setConversationId(newConversationId);
-        setMessages([]);
+        toast.success('Conversation deleted');
+        if (convId === conversationId) {
+          const newConversationId = uuidv4();
+          sessionStorage.setItem('conversationId', newConversationId);
+          context?.setConversationId(newConversationId);
+          setMessages([]);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -379,10 +379,12 @@ const LeftSide = (props?: any) => {
           style={{ marginTop: !username ? '55px' : '0px' }}>
           {conversations.length > 0 ? (
             <>
-              <div className={styles.chatHistoryTitle}>Previous chats</div>
               <div className={styles.linebreak}></div>
+              <div className={styles.chatHistoryTitle}>Previous chats</div>
             </>
-          ) : conversations.length === 0 ? (<div className={styles.noHistory}>No History</div>):(
+          ) : conversations.length === 0 ? (
+            <div className={styles.noHistory}>No History</div>
+          ) : (
             <div style={{ textAlign: 'center', marginTop: '50px' }}>
               {/* @ts-ignore */}
               <Spinner />
@@ -391,10 +393,7 @@ const LeftSide = (props?: any) => {
           {conversations.map((conv: any, index: number) => {
             return (
               <>
-                <div
-                  className={styles.chatItem}
-                  key={conv.conversationId}
-                  onClick={() => convChangeHandler(conv)}>
+                <div className={styles.chatItem} key={conv.conversationId}>
                   <div className={styles.convDate}>
                     {getFormattedDate(conv.updatedAt)}
                   </div>
@@ -402,32 +401,27 @@ const LeftSide = (props?: any) => {
                   <div className={styles.chat}>
                     <Image src={messageIcon} alt="" width={20} height={20} />
                     <p
+                      onClick={() => convChangeHandler(conv)}
                       style={{
-                        flex:
-                          sessionStorage.getItem('conversationId') ===
-                          conv?.conversationId
-                            ? 0.9
-                            : 1,
+                        flex: 0.95,
                         marginLeft: '2px',
                       }}>
                       {!mobile
                         ? conv.query.split(' ').length > 4
                           ? conv.query.split(' ').slice(0, 4).join(' ') + '...'
                           : conv.query
-                        : conv.query.split(' ').length > 7
-                        ? conv.query.split(' ').slice(0, 7).join(' ') + '...'
+                        : conv.query.split(' ').length > 5
+                        ? conv.query.split(' ').slice(0, 5).join(' ') + '...'
                         : conv.query}
                     </p>
-                    {sessionStorage.getItem('conversationId') ===
-                      conv?.conversationId && (
-                      <Image
-                        src={deleteIcon}
-                        alt="deleteIcon"
-                        width={15}
-                        height={15}
-                        onClick={deleteConversation}
-                      />
-                    )}
+
+                    <Image
+                      src={deleteIcon}
+                      alt="deleteIcon"
+                      width={15}
+                      height={15}
+                      onClick={() => deleteConversation(conv?.conversationId)}
+                    />
                   </div>
 
                   <div className={styles.linebreak}></div>

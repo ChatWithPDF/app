@@ -56,6 +56,10 @@ function NavBar() {
   }
 
   const newChatHandler = () => {
+    if(context?.loading){
+      toast.error('Please wait for a response!');
+      return;
+    }
     context?.setMessages([]);
     const newConversationId = uuidv4();
     sessionStorage.setItem('conversationId', newConversationId);
