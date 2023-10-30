@@ -2,14 +2,14 @@ import { useState, useContext, useCallback, useEffect } from 'react';
 import styles from './index.module.css';
 import { AppContext } from '../../context';
 import { useLocalization } from '../../hooks';
-import { Select, MenuItem } from '@material-ui/core';
 import HamburgerIcon from '../../assets/icons/burger-menu';
 import crossIcon from '../../assets/icons/crossIcon.svg';
 import Image from 'next/image';
 import LeftSide from '../LeftSide';
 import { v4 as uuidv4 } from 'uuid';
 import plusIcon from '../../assets/icons/plus.svg';
-import pdfIcon from '../../assets/icons/pdfIcon.svg'
+import pdfIcon from '../../assets/icons/pdfIcon.svg';
+import messageIcon from '../../assets/icons/message-menu.svg';
 import toast from 'react-hot-toast';
 
 function NavBar() {
@@ -81,7 +81,7 @@ function NavBar() {
       </div>
       <div className={styles.navbarHeading}>{t('label.title')}</div>
       {mobile && <div className={styles.newChatContainer} onClick={showPdfHandler}>
-        <Image src={pdfIcon} alt="" width={20} height={20} />
+        {context?.showPdf ? <Image src={messageIcon} alt=""  width={20} height={20}/> : <Image src={pdfIcon} alt="" width={20} height={20} />}
       </div>}
       <div className={styles.newChatContainer} onClick={newChatHandler}>
         <Image src={plusIcon} alt="" width={20} height={20} />

@@ -19,25 +19,6 @@
   margin: 5px 0;
 }
 
-.dropzone {
-  background-color: #324352;
-  border: 1px solid white;
-  border-style: dashed;
-  padding: 1vh;
-  text-align: center;
-  border-radius: 10px;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.dropzone:hover {
-  cursor: pointer;
-}
-
-.dropzone span {
-  color: #cccccc;
-}
-
 .pdfElement {
   display: flex;
   align-items: center;
@@ -70,6 +51,11 @@
   font-size: 12px;
   font-family: Mulish-bold;
   color: white;
+}
+
+.noHistory{
+  font-family: Mulish-bold;
+  text-align: center;
 }
 
 .chatList {
@@ -123,17 +109,17 @@
 }
 
 .sideDrawer {
-  height: 100%;
   background: white;
   position: fixed;
   top: 0;
   right: 0;
-  width: 40%;
   z-index: 200;
   box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.5);
   transform: translateX(-100%);
   transition: transform 0.3s ease-out;
+  width: 70% !important;
 }
+
 .open {
   transform: translateX(0);
 }
@@ -155,14 +141,6 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-  }
-  .dropzone {
-    width: 50%;
-    margin: auto;
-    margin-top: 10%;
-  }
-  .dropzone p {
-    font-size: 3rem;
   }
   .mobileView {
     display: block;

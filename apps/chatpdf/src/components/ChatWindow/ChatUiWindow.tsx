@@ -40,17 +40,21 @@ const ChatUiWindow: React.FC = () => {
 
   useEffect(() => {
     // should be logged in, should have phone number, should not trigger again in one session and should have username
-    if(context?.isLoggedIn && localStorage.getItem('phoneNumber') && !sessionStorage.getItem('triggered') && localStorage.getItem('username')){
+    if (
+      context?.isLoggedIn &&
+      localStorage.getItem('phoneNumber') &&
+      !sessionStorage.getItem('triggered') &&
+      localStorage.getItem('username')
+    ) {
       //@ts-ignore
-      setUserProperties(analytics, {name: localStorage.getItem('username')})
+      setUserProperties(analytics, { name: localStorage.getItem('username') });
       //@ts-ignore
       logEvent(analytics, localStorage.getItem('phoneNumber'), {
-        username: localStorage.getItem('username')
+        username: localStorage.getItem('username'),
       });
       sessionStorage.setItem('triggered', 'true');
     }
-  }, [context?.isLoggedIn])
-  
+  }, [context?.isLoggedIn]);
 
   const normalizedChat = (chats: any): any => {
     console.log('in normalized');
@@ -135,9 +139,27 @@ const ChatUiWindow: React.FC = () => {
 
   return (
     <>
+    {/* sidebar backdrop div */}
+      <div
+        style={{
+          background: context?.collapsed ? 'rgba(0, 0, 0, 0.6)' : '',
+          position: context?.collapsed ? 'absolute' : 'static',
+          top: '0',
+          bottom: '0',
+          left: '0',
+          right: '0',
+          zIndex: context?.collapsed ? '111' : '0',
+        }}></div>
       <div style={{ height: divHeight, width: '100%' }}>
         <Chat
-          quickReplies={[{name:"When is the next holiday?"}, {name:"How can I create a good one-pager?"}, {name:"What is a Samagra case study?"}, {name: "I've used 11 leaves this year; how many can I carry over?"}]}
+          quickReplies={[
+            { name: 'When is the next holiday?' },
+            { name: 'How can I create a good one-pager?' },
+            { name: 'What is a Samagra case study?' },
+            {
+              name: "I've used 11 leaves this year; how many can I carry over?",
+            },
+          ]}
           onQuickReplyClick={(e: any) => handleSend('text', e.name)}
           btnColor="var(--secondary)"
           background="var(--bg-color)"

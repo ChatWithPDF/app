@@ -76,6 +76,17 @@ const MiddleSide = () => {
 
   return (
     <div className={`${styles.main} shadow-lg`}>
+      {/* sidebar backdrop div */}
+      <div
+        style={{
+          background: context?.collapsed ? 'rgba(0, 0, 0, 0.6)' : '',
+          position: context?.collapsed ? 'absolute' : 'static',
+          top: '0',
+          bottom: '0',
+          left: '0',
+          right: '0',
+          zIndex: context?.collapsed ? '111' : '0',
+        }}></div>
       <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
         {uploadingPdf ? (
           processingPdf ? (
@@ -104,7 +115,11 @@ const MiddleSide = () => {
               background: 'white',
             }}>
             <Viewer
-              defaultScale={context?.showPdf ? SpecialZoomLevel.ActualSize : SpecialZoomLevel.PageWidth}
+              defaultScale={
+                context?.showPdf
+                  ? SpecialZoomLevel.ActualSize
+                  : SpecialZoomLevel.PageWidth
+              }
               plugins={[
                 newPlugin,
                 searchPluginInstance,

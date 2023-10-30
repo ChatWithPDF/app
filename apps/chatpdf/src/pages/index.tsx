@@ -83,9 +83,9 @@ const Home: NextPage = () => {
                 position: 'fixed',
                 top: '0',
                 bottom: '0',
-                height: '100%'
+                height: '100%',
               }}>
-                <NavBar />
+              <NavBar />
               <MiddleSide />
             </div>
           </div>

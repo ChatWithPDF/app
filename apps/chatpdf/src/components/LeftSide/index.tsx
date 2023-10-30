@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from 'react';
-import Dropzone from 'react-dropzone';
 import styles from './index.module.css';
 import messageIcon from '../../assets/icons/message.svg';
 import BurgerIcon from '../../assets/icons/burger-menu';
@@ -89,7 +88,7 @@ const LeftSide = (props?: any) => {
   };
 
   const handleToggleCollapse = () => {
-    setCollapsed((prevCollapsed: any) => !prevCollapsed);
+    setCollapsed(false);
   };
 
   useEffect(() => {
@@ -233,7 +232,7 @@ const LeftSide = (props?: any) => {
     setPdfList(newPdfList);
 
     // Run only for mobile view
-    window.innerWidth < 768 && setCollapsed((prev: any) => !prev);
+    window.innerWidth < 768 && setCollapsed(false);
   };
 
   useEffect(() => {
@@ -352,25 +351,6 @@ const LeftSide = (props?: any) => {
           : ''
       }`}>
       <div>
-        {/* <div className={styles.dropzone}>
-          <Dropzone onDrop={onDrop}>
-            {({ getRootProps, getInputProps }) => (
-              <section>
-                <div {...getRootProps()}>
-                  <input {...getInputProps()} />
-                  {!collapsed ? (
-                    <>
-                      <p>+ New Chat</p>
-                      <span>Drop PDF here</span>
-                    </>
-                  ) : (
-                    <p>+</p>
-                  )}
-                </div>
-              </section>
-            )}
-          </Dropzone>
-        </div> */}
 
         {username && <div className={styles.username}>Hi {username}!</div>}
         {/* {username && <div className={styles.linebreak}></div> } */}
@@ -402,7 +382,7 @@ const LeftSide = (props?: any) => {
               <div className={styles.chatHistoryTitle}>Previous chats</div>
               <div className={styles.linebreak}></div>
             </>
-          ) : (
+          ) : conversations.length === 0 ? (<div className={styles.noHistory}>No History</div>):(
             <div style={{ textAlign: 'center', marginTop: '50px' }}>
               {/* @ts-ignore */}
               <Spinner />
