@@ -201,7 +201,29 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     }
   };
 
+  const isUrl = (word: any) => {
+    const urlPattern =
+      /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/gm;
+    return word.match(urlPattern);
+  };
+
+  const addMarkup = (word: any) => {
+    return isUrl(word)
+      ? `<a href="${word}" style="text-decoration: underline">${word}</a>`
+      : word.replace(
+          /\[(\d+)\]/g,
+          // @ts-ignore
+          (match, p1) =>
+            `<sup class="reference ${p1}" style="margin-right: 2px; color: var(--secondary)"><button>${p1}</button></sup>`
+        );
+  };
+
   const { content, type } = message;
+
+  const formattedContent = content?.text
+    .split(' ')
+    .map((word: any, index: number) => addMarkup(word))
+    .join(' ');
 
   switch (type) {
     case 'loader':
@@ -230,14 +252,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 color:
                   content?.data?.position === 'right' ? 'white' : 'var(--font)',
               }}>
-              <RichText
-                content={content.text.replace(
-                  /\[(\d+)\]/g,
-                  // @ts-ignore
-                  (match, p1) =>
-                    `<sup class="reference ${p1}" style="margin-right: 2px; color: var(--secondary)"><button>${p1}</button></sup>`
-                )}
-              />
+              <RichText content={formattedContent} />
             </span>
             <div
               style={{
