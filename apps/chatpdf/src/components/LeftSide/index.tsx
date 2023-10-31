@@ -32,39 +32,10 @@ const LeftSide = (props?: any) => {
     setCollapsed,
     currentPdfId,
     setCurrentPdfId,
+    getConversations,
+    conversations
   } = context;
   const [cookie, setCookie, removeCookie] = useCookies();
-  const [conversations, setConversations] = useState([]);
-
-  const getConversations = () => {
-    axios
-      .get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/conversations`, {
-        headers: {
-          Authorization: `Bearer ${cookie['access_token']}`,
-        },
-      })
-      .then((res) => {
-        console.log('history', res.data);
-        const sortedConversations = [...res.data].sort((a, b) => {
-          const dateA = new Date(a.updatedAt);
-          const dateB = new Date(b.updatedAt);
-          //@ts-ignore
-          return dateB - dateA;
-        });
-
-        //@ts-ignore
-        setConversations(sortedConversations);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error('Could not load your chat history!');
-      });
-  };
-
-  useEffect(() => {
-    getConversations();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages]);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -276,6 +247,10 @@ const LeftSide = (props?: any) => {
   };
 
   const convChangeHandler = (conv: any) => {
+    if(context?.loading){
+      toast.error('Please wait for a response!');
+      return;
+    }
     sessionStorage.setItem('conversationId', conv?.conversationId);
     context?.setConversationId(conv?.conversationId);
     axios
@@ -352,7 +327,8 @@ const LeftSide = (props?: any) => {
       }`}>
       <div>
         {username && <div className={styles.username}>Hi {username}!</div>}
-       { conversations.length > 0 && <div className={styles.linebreak}></div>}
+        {/* @ts-ignore */}
+       { conversations && conversations.length > 0 && <div className={styles.linebreak}></div>}
         {/* {username && <div className={styles.linebreak}></div> } */}
 
         {/* <div className={styles.pdflist}>
@@ -377,19 +353,22 @@ const LeftSide = (props?: any) => {
         <div
           className={styles.chatList}
           style={{ marginTop: !username && mobile ? '55px' : '0px' }}>
-          {conversations.length > 0 ? (
+            {/* @ts-ignore */}
+          {conversations && conversations.length > 0 ? (
             <>
               <div className={styles.chatHistoryTitle}>Previous chats</div>
             </>
-          ) : conversations.length === 0 ? (
-            <div className={styles.noHistory}>No History</div>
-          ) : (
-            <div style={{ textAlign: 'center', marginTop: '50px' }}>
+            // @ts-ignore
+            ) : conversations && conversations.length === 0 ? (
+              <div className={styles.noHistory}>No History</div>
+              ) : (
+                <div style={{ textAlign: 'center', marginTop: '50px' }}>
               {/* @ts-ignore */}
               <Spinner />
             </div>
           )}
-          {conversations.map((conv: any, index: number) => {
+           {/* @ts-ignore */}
+          {conversations && conversations.map((conv: any, index: number) => {
             return (
               <>
                 <div className={styles.chatItem} key={conv.conversationId}>

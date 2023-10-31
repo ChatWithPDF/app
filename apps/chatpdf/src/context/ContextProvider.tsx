@@ -60,6 +60,7 @@ const ContextProvider: FC<{
   const [keyword, setKeyword] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState(cookie['access_token'] && localStorage.getItem('userID'));
   const [showPdf, setShowPdf] = useState(false);
+  const [conversations, setConversations] = useState(null);
 
   console.log(messages);
 
@@ -106,6 +107,35 @@ const ContextProvider: FC<{
   );
 
   console.log('erty:', { conversationId });
+
+  const getConversations = useCallback(() => {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/conversations`, {
+        headers: {
+          Authorization: `Bearer ${cookie['access_token']}`,
+        },
+      })
+      .then((res) => {
+        console.log('history', res.data);
+        const sortedConversations = [...res.data].sort((a, b) => {
+          const dateA = new Date(a.updatedAt);
+          const dateB = new Date(b.updatedAt);
+          //@ts-ignore
+          return dateB - dateA;
+        });
+
+        //@ts-ignore
+        setConversations(sortedConversations);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error('Could not load your chat history!');
+      });
+  }, [cookie]);
+
+  useEffect(() => {
+    getConversations()
+  }, [getConversations, conversationId])
 
   const onMessageReceived = useCallback(
     async (msg: any) => {
@@ -336,7 +366,9 @@ const ContextProvider: FC<{
       isLoggedIn,
       setIsLoggedIn,
       showPdf,
-      setShowPdf
+      setShowPdf,
+      getConversations,
+      conversations
     }),
     [
       locale,
@@ -380,7 +412,9 @@ const ContextProvider: FC<{
       isLoggedIn,
       setIsLoggedIn,
       showPdf,
-      setShowPdf
+      setShowPdf,
+      getConversations,
+      conversations
     ]
   );
 
