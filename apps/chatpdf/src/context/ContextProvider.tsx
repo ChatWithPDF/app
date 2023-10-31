@@ -58,7 +58,9 @@ const ContextProvider: FC<{
   const audioRef = useRef(null);
   const [currentPdfId, setCurrentPdfId] = useState('');
   const [keyword, setKeyword] = useState();
-  const [isLoggedIn, setIsLoggedIn] = useState(cookie['access_token'] && localStorage.getItem('userID'));
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    cookie['access_token'] && localStorage.getItem('userID')
+  );
   const [showPdf, setShowPdf] = useState(false);
   const [conversations, setConversations] = useState(null);
 
@@ -95,10 +97,10 @@ const ContextProvider: FC<{
           ...media,
         };
 
-        console.log("here", msg, conversationId)
+        console.log('here', msg, conversationId);
         //@ts-ignore
-        if (conversationId === msg?.content?.conversationId){
-          console.log("here", newMsg)
+        if (conversationId === msg?.content?.conversationId) {
+          console.log('here', newMsg);
           setMessages((prev: any) => [...prev, newMsg]);
         }
       }
@@ -109,6 +111,7 @@ const ContextProvider: FC<{
   console.log('erty:', { conversationId });
 
   const getConversations = useCallback(() => {
+    if (!cookie['access_token']) return;
     axios
       .get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/conversations`, {
         headers: {
@@ -134,10 +137,8 @@ const ContextProvider: FC<{
   }, [cookie]);
 
   useEffect(() => {
-    setTimeout(() => {
-      if (cookie['access_token']) getConversations();
-    }, 1000);
-  }, [getConversations, conversationId, cookie])
+    getConversations();
+  }, [getConversations, conversationId]);
 
   const onMessageReceived = useCallback(
     async (msg: any) => {
@@ -370,7 +371,7 @@ const ContextProvider: FC<{
       showPdf,
       setShowPdf,
       getConversations,
-      conversations
+      conversations,
     }),
     [
       locale,
@@ -416,7 +417,7 @@ const ContextProvider: FC<{
       showPdf,
       setShowPdf,
       getConversations,
-      conversations
+      conversations,
     ]
   );
 
@@ -432,8 +433,9 @@ const ContextProvider: FC<{
 
 const SSR: FC<{ children: ReactElement }> = ({ children }) => {
   const [locale, setLocale] = useState('');
-  const [localeMsgs, setLocaleMsgs] =
-    useState<Record<string, string> | null>(null);
+  const [localeMsgs, setLocaleMsgs] = useState<Record<string, string> | null>(
+    null
+  );
   useEffect(() => {
     setLocale(localStorage.getItem('locale') || 'en');
   }, []);
