@@ -351,8 +351,8 @@ const LeftSide = (props?: any) => {
           : ''
       }`}>
       <div>
-
         {username && <div className={styles.username}>Hi {username}!</div>}
+       { conversations.length > 0 && <div className={styles.linebreak}></div>}
         {/* {username && <div className={styles.linebreak}></div> } */}
 
         {/* <div className={styles.pdflist}>
@@ -376,10 +376,9 @@ const LeftSide = (props?: any) => {
         </div> */}
         <div
           className={styles.chatList}
-          style={{ marginTop: (!username && mobile) ? '55px' : '0px' }}>
+          style={{ marginTop: !username && mobile ? '55px' : '0px' }}>
           {conversations.length > 0 ? (
             <>
-              <div className={styles.linebreak}></div>
               <div className={styles.chatHistoryTitle}>Previous chats</div>
             </>
           ) : conversations.length === 0 ? (
@@ -406,12 +405,8 @@ const LeftSide = (props?: any) => {
                         flex: 0.95,
                         marginLeft: '2px',
                       }}>
-                      {!mobile
-                        ? conv.query.split(' ').length > 4
-                          ? conv.query.split(' ').slice(0, 4).join(' ') + '...'
-                          : conv.query
-                        : conv.query.split(' ').length > 5
-                        ? conv.query.split(' ').slice(0, 5).join(' ') + '...'
+                      {conv.query.split(' ').length > 4
+                        ? conv.query.split(' ').slice(0, 4).join(' ') + '...'
                         : conv.query}
                     </p>
 

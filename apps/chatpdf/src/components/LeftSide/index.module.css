@@ -47,11 +47,7 @@
 }
 
 .chatHistoryTitle {
-  font-size: 12px;
-  font-family: Mulish-bold;
   color: white;
-  background-color: #5c5200;
-  border-radius: 15px;
   padding: 5px;
   margin-bottom: 2px;
 }
