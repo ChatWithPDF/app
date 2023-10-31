@@ -2,10 +2,11 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import ContextProvider from '../context/ContextProvider';
-import { ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import 'chatui/dist/index.css';
 import { Toaster } from 'react-hot-toast';
-import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import flagsmith from 'flagsmith/isomorphic';
+import { FlagsmithProvider } from 'flagsmith/react';
 
 function SafeHydrate({ children }: { children: ReactElement }) {
   return (
@@ -16,26 +17,21 @@ function SafeHydrate({ children }: { children: ReactElement }) {
 }
 
 const App = ({ Component, pageProps }: AppProps) => {
-  // useEffect(() => {
-  //   // Initialize an agent at application startup.
-  //   const fpPromise = FingerprintJS.load();
+  const [flagsmithState, setflagsmithState] = useState(null);
 
-  //   (async () => {
-  //     // Get the visitor identifier when you need it.
-  //     const fp = await fpPromise;
-  //     const result = await fp.get();
-  //     const stringToUuid = (str: any) => {
-  //       str = str.replace('-', '');
-  //       return 'xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx'.replace(
-  //         /[x]/g,
-  //         function (c, p) {
-  //           return str[p % str.length];
-  //         }
-  //       );
-  //     };
-  //     localStorage.setItem('userID', stringToUuid(result?.visitorId));
-  //   })();
-  // }, []);
+  useEffect(() => {
+    const getFlagSmithState = async () => {
+      await flagsmith.init({
+        // eslint-disable-next-line turbo/no-undeclared-env-vars
+        environmentID: process.env.NEXT_PUBLIC_ENVIRONMENT_ID || '',
+      });
+      if (flagsmith.getState()) {
+        //@ts-ignore
+        setflagsmithState(flagsmith.getState());
+      }
+    };
+    getFlagSmithState();
+  }, []);
 
   if (process.env.NODE_ENV === 'production') {
     globalThis.console.log = () => {};
@@ -43,14 +39,17 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <ChakraProvider>
-      <ContextProvider>
-        <div style={{ height: '100%' }}>
-          <Toaster position="top-center" reverseOrder={false} />
-          <SafeHydrate>
-            <Component {...pageProps} />
-          </SafeHydrate>
-        </div>
-      </ContextProvider>
+      {/* @ts-ignore */}
+      <FlagsmithProvider flagsmith={flagsmith} serverState={flagsmithState}>
+        <ContextProvider>
+          <div style={{ height: '100%' }}>
+            <Toaster position="top-center" reverseOrder={false} />
+            <SafeHydrate>
+              <Component {...pageProps} />
+            </SafeHydrate>
+          </div>
+        </ContextProvider>
+      </FlagsmithProvider>
     </ChakraProvider>
   );
 };

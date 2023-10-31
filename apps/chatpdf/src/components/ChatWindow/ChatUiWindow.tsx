@@ -19,11 +19,17 @@ import RenderVoiceRecorder from '../recorder/RenderVoiceRecorder';
 import NavBar from '../NavBar';
 import { logEvent, setUserProperties } from 'firebase/analytics';
 import { analytics } from '../../utils/firebase';
+import { useFlags } from 'flagsmith/react';
 
 const ChatUiWindow: React.FC = () => {
   const t = useLocalization();
   const context = useContext(AppContext);
   const [divHeight, setDivHeight] = useState<any>('88%');
+  const flags = useFlags([
+    'example_ques_one',
+    'example_ques_two',
+    'example_ques_three',
+  ]);
 
   const updateDivHeight = () => {
     const newHeight = window.innerWidth < 768 ? window.innerHeight - 80 : '88%';
@@ -139,7 +145,7 @@ const ChatUiWindow: React.FC = () => {
 
   return (
     <>
-    {/* sidebar backdrop div */}
+      {/* sidebar backdrop div */}
       <div
         style={{
           background: context?.collapsed ? 'rgba(0, 0, 0, 0.6)' : '',
@@ -153,12 +159,20 @@ const ChatUiWindow: React.FC = () => {
       <div style={{ height: divHeight, width: '100%' }}>
         <Chat
           quickReplies={[
-            { name: 'When is the next holiday?' },
-            { name: 'How can I create a good one-pager?' },
-            { name: 'What is a Samagra case study?' },
             {
-              name: "I've used 11 leaves this year; how many can I carry over?",
+              name:
+                flags?.example_ques_one?.value || 'When is the next holiday?',
             },
+            {
+              name:
+                flags?.example_ques_two?.value ||
+                'How can I create a good one-pager?',
+            },
+            {
+              name:
+                flags?.example_ques_three?.value ||
+                'What is a Samagra case study?',
+            }
           ]}
           onQuickReplyClick={(e: any) => handleSend('text', e.name)}
           btnColor="var(--secondary)"
