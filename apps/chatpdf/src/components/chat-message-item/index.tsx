@@ -221,9 +221,9 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   const sanitizedText = content?.text.replace(/\n/g, '\n ');
 
   const formattedContent = sanitizedText
-    .split(' ')
-    .map((word: any, index: number) => addMarkup(word))
-    .join(' ');
+    ?.split(' ')
+    ?.map((word: any, index: number) => addMarkup(word))
+    ?.join(' ');
 
   switch (type) {
     case 'loader':
