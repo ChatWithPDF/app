@@ -201,20 +201,30 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     }
   };
 
-  const isUrl = (word: any) => {
-    const urlPattern = /(https?:\/\/[^\s]+)/;
-    return word.match(urlPattern);
+  const createLinkIfUrl = (text: any) => {
+    const urlPattern = /(https:\/\/[^\s\])]+)/g;
+    return text.replace(urlPattern, (url: any) => {
+      const lastCharacter = url[url.length - 1];
+      const punctuation = /[)\]]/;
+
+      if (punctuation.test(lastCharacter)) {
+        const urlWithoutPunctuation = url.slice(0, -1);
+        return `<a href="${urlWithoutPunctuation}" target="_blank" style="text-decoration: underline; color: #0000ffb7">${urlWithoutPunctuation}</a>${lastCharacter}`;
+      }
+
+      return `<a href="${url}" style="text-decoration: underline; color: #0000ffb7">${url}</a>`;
+    });
   };
 
   const addMarkup = (word: any) => {
-    return isUrl(word)
-      ? `<a href="${word}" style="text-decoration: underline; color: #0000ffb7">${word}</a>`
-      : word.replace(
-          /\[(\d+)\]/g,
-          // @ts-ignore
-          (match, p1) =>
-            `<sup class="reference ${p1}" style="margin-right: 2px; color: var(--secondary)"><button>${p1}</button></sup>`
-        );
+    return (
+      createLinkIfUrl(word) ||
+      word.replace(
+        /\[(\d+)\]/g,
+        (match: any, p1: any) =>
+          `<sup class="reference ${p1}" style="margin-right: 2px; color: var(--secondary)"><button>${p1}</button></sup>`
+      )
+    );
   };
 
   const { content, type } = message;
