@@ -223,7 +223,7 @@ const LeftSide = (props?: any) => {
     const conversationId = sessionStorage.getItem('conversationId');
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/user/conversations/delete/${conversationId}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/user/conversations/delete/${convId}`,
         {
           headers: {
             Authorization: `Bearer ${cookie['access_token']}`,
