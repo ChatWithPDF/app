@@ -135,9 +135,9 @@ const ContextProvider: FC<{
 
   useEffect(() => {
     setTimeout(() => {
-      getConversations();
+      if (cookie['access_token']) getConversations();
     }, 1000);
-  }, [getConversations, conversationId])
+  }, [getConversations, conversationId, cookie])
 
   const onMessageReceived = useCallback(
     async (msg: any) => {
