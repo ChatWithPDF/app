@@ -376,7 +376,7 @@ const LeftSide = (props?: any) => {
         </div> */}
         <div
           className={styles.chatList}
-          style={{ marginTop: !username ? '55px' : '0px' }}>
+          style={{ marginTop: (!username && mobile) ? '55px' : '0px' }}>
           {conversations.length > 0 ? (
             <>
               <div className={styles.linebreak}></div>
