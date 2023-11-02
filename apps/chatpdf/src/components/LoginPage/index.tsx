@@ -44,9 +44,11 @@ const LoginPage = () => {
           })
           .catch((err) => {
             toast.error('OTP service down, please try again later.');
+            setSendOtpDisabled(false);
           });
       } else {
         toast.error('No internet connection');
+        setSendOtpDisabled(false);
       }
     }
   };
