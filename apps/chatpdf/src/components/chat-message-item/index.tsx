@@ -32,7 +32,9 @@ import { ChatMessageItemPropType } from '../../types';
 import { getFormatedTime } from '../../utils/getUtcTime';
 import { useLocalization } from '../../hooks/useLocalization';
 import { getReactionUrl } from '../../utils/getUrls';
-import Image from 'next/image';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw'
 import { Button } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 
@@ -201,29 +203,11 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     }
   };
 
-  const createLinkIfUrl = (text: any) => {
-    const urlPattern = /(https:\/\/[^\s\])]+)/g;
-    return text.replace(urlPattern, (url: any) => {
-      const lastCharacter = url[url.length - 1];
-      const punctuation = /[)\]]/;
-
-      if (punctuation.test(lastCharacter)) {
-        const urlWithoutPunctuation = url.slice(0, -1);
-        return `<a href="${urlWithoutPunctuation}" target="_blank" style="text-decoration: underline; color: #0000ffb7">${urlWithoutPunctuation}</a>${lastCharacter}`;
-      }
-
-      return `<a href="${url}" style="text-decoration: underline; color: #0000ffb7">${url}</a>`;
-    });
-  };
-
   const addMarkup = (word: any) => {
-    return (
-      createLinkIfUrl(word) ||
-      word.replace(
-        /\[(\d+)\]/g,
-        (match: any, p1: any) =>
-          `<sup class="reference ${p1}" style="margin-right: 2px; color: var(--secondary)"><button>${p1}</button></sup>`
-      )
+    return word.replace(
+      /\[(\d+)\]/g,
+      (match: any, p1: any) =>
+        `<sup class="reference ${p1}" style="margin-right: 2px; color: var(--secondary)"><button>${p1}</button></sup>`
     );
   };
 
@@ -245,7 +229,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             display: 'flex',
             flexDirection: 'column',
             position: 'relative',
-            maxWidth: '90vw',
+            maxWidth: '100%',
           }}>
           {/* <div
             className={
@@ -255,14 +239,35 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
             }></div> */}
           <Bubble type="text">
             <span
-              className="onHover"
+              className={styles.onHover}
               style={{
                 fontWeight: 600,
-                fontSize: '1.2rem',
+                fontSize: '16px',
                 color:
                   content?.data?.position === 'right' ? 'white' : 'var(--font)',
               }}>
-              <RichText content={formattedContent} />
+              <Markdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+                components={{
+                  li: ({ children }) => (
+                    <li style={{ marginLeft: '20px' }}>{children}</li>
+                  ),
+                  a: ({ node, ...props }) => (
+                    <a
+                    target='_blank'
+                      style={{
+                        textDecoration: 'underline',
+                        color: '#0000ffb7',
+                      }}
+                      {...props}>
+                      {props.children}
+                    </a>
+                  ),
+                }}>
+                {formattedContent}
+              </Markdown>
+              {/* <RichText content={formatText(formattedContent)} /> */}
             </span>
             <div
               style={{
