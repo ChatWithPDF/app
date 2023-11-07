@@ -175,3 +175,6 @@ body {
   color: white !important;
   font-family: Mulish-demi !important;
 }
+li p {
+  margin-top: -25px !important;
+}

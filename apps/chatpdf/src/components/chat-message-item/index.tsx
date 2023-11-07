@@ -34,7 +34,7 @@ import { useLocalization } from '../../hooks/useLocalization';
 import { getReactionUrl } from '../../utils/getUrls';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import rehypeRaw from 'rehype-raw'
+import rehypeRaw from 'rehype-raw';
 import { Button } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 
@@ -255,7 +255,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   ),
                   a: ({ node, ...props }) => (
                     <a
-                    target='_blank'
+                      target="_blank"
                       style={{
                         textDecoration: 'underline',
                         color: '#0000ffb7',
