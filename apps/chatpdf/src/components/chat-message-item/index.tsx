@@ -212,12 +212,12 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
   };
 
   const { content, type } = message;
-  const sanitizedText = content?.text.replace(/\n/g, '\n ');
+  const sanitizedText = content?.text?.replace(/\n/g, '\n ');
 
-  const formattedContent = sanitizedText
+  const formattedContent = sanitizedText ? sanitizedText
     ?.split(' ')
     ?.map((word: any, index: number) => addMarkup(word))
-    ?.join(' ');
+    ?.join(' ') : 'Something went wrong. Please try later.';
 
   switch (type) {
     case 'loader':
