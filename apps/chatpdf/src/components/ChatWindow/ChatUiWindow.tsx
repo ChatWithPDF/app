@@ -143,6 +143,14 @@ const ChatUiWindow: React.FC = () => {
 
   const placeholder = useMemo(() => t('message.ask_ur_question'), [t]);
 
+  const quickReplyClickHandler = (e: any) => {
+    if(context?.loading){
+      toast.error('Please wait for reply!');
+      return;
+    }
+    handleSend('text', e.name);
+  }
+
   return (
     <>
       {/* sidebar backdrop div */}
@@ -174,7 +182,7 @@ const ChatUiWindow: React.FC = () => {
                 'What is a Samagra case study?',
             }
           ]}
-          onQuickReplyClick={(e: any) => handleSend('text', e.name)}
+          onQuickReplyClick={quickReplyClickHandler}
           btnColor="var(--secondary)"
           background="var(--bg-color)"
           disableSend={context?.loading}
