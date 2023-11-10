@@ -41,7 +41,7 @@ const LoginPage = () => {
               setSendOtpDisabled(false);
               let body = await response.json();
               if(body?.message == "Forbidden")
-              toast.error('Unauthorized');
+              toast.error('Sorry, you are not authorized to log in');
               else
               toast.error('Could not send OTP, please try again later.');
             }
@@ -160,7 +160,7 @@ const LoginPage = () => {
           setSendOtpDisabled(false);
           let body = await response.json();
           if(body?.message == "Forbidden")
-          toast.error('Unauthorized');
+          toast.error('Sorry, you are not authorized to log in');
           else
           toast.error('Could not send OTP, please try again later.');
         }
