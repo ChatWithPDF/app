@@ -29,16 +29,20 @@ const LoginPage = () => {
     } else {
       if (navigator.onLine) {
         setSendOtpDisabled(true);
-        toast.success('OTP sent');
         fetch(
-          `${process.env.NEXT_PUBLIC_OTP_BASE_URL}/api/sendOTP?phone=${phone}`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}/user/sendOTP?phone=${phone}`,
           { method: 'GET' }
         )
-          .then((response) => {
+          .then(async (response) => {
             if (response.status === 200) {
+              toast.success('OTP sent');
               setOtpSent(true);
             } else {
               setSendOtpDisabled(false);
+              let body = await response.json();
+              if(body?.message == "Forbidden")
+              toast.error('Unauthorized');
+              else
               toast.error('Could not send OTP, please try again later.');
             }
           })
@@ -134,10 +138,10 @@ const LoginPage = () => {
     }
     setIsResendingOTP(true);
     fetch(
-      `${process.env.NEXT_PUBLIC_OTP_BASE_URL}/api/sendOTP?phone=${phone}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/user/sendOTP?phone=${phone}`,
       { method: 'GET' }
     )
-      .then((response) => {
+      .then(async(response) => {
         if (response.status === 200) {
           toast.success('OTP sent again');
           setCountdown(30);
@@ -154,6 +158,10 @@ const LoginPage = () => {
         } else {
           setIsResendingOTP(true);
           setSendOtpDisabled(false);
+          let body = await response.json();
+          if(body?.message == "Forbidden")
+          toast.error('Unauthorized');
+          else
           toast.error('Could not send OTP, please try again later.');
         }
       })
