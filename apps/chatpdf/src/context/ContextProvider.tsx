@@ -242,7 +242,7 @@ const ContextProvider: FC<{
 
         try {
           const response = await axios.post(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/prompt`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}/web/prompt`,
             data,
             {
               headers: {
